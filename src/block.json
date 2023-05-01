@@ -1,0 +1,99 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "jquery-categories-list/categories-block",
+  "version": "4.0.0",
+  "title": "JS Category List",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "A widget for displaying a category list with some effects.",
+  "textdomain": "jcl_i18n",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "supports": {
+    "multiple": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "symbol": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "default": "0"
+    },
+    "effect": {
+      "type": "string",
+      "enum": [
+        "none",
+        "slide",
+        "fade"
+      ],
+      "default": "none"
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "left",
+        "right"
+      ],
+      "default": "left"
+    },
+    "orderby": {
+      "type": "string",
+      "enum": [
+        "count",
+        "id",
+        "name",
+        "slug"
+      ],
+      "default": "name"
+    },
+    "orderdir": {
+      "type": "string",
+      "enum": [
+        "ASC",
+        "DESC"
+      ]
+    },
+    "expand": {
+      "type": "string",
+      "enum": [
+        "",
+        "all",
+        "sel_cat"
+      ],
+      "default": ""
+    },
+    "parent_expand": {
+      "type": "boolean",
+      "default": false
+    },
+    "showcount": {
+      "type": "boolean",
+      "default": false
+    },
+    "show_empty": {
+      "type": "boolean",
+      "default": false
+    },
+    "include_or_exclude": {
+      "type": "string",
+      "enum": [
+        "exclude",
+        "include"
+      ],
+      "default": "include"
+    },
+    "categories": {
+      "type": "array"
+    }
+  }
+}
