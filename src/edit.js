@@ -25,7 +25,6 @@ export default function Edit( { attributes, setAttributes } ) {
 	const categories = Array.isArray( attributes.categories )
 		? attributes.categories
 		: [];
-	console.log( 'categories', attributes );
 
 	return (
 		<div { ...useBlockProps() }>
@@ -196,6 +195,8 @@ export default function Edit( { attributes, setAttributes } ) {
 										setAttributes( { show_empty: val } )
 									}
 								/>
+              </PanelRow>
+              <PanelRow>
 								<CheckboxControl
 									label={ __(
 										'Parent expand sub-categories',

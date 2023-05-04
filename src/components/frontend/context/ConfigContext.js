@@ -33,9 +33,9 @@ export const ConfigProvider = ({attributes, children}) => {
             parsedConfig.currentPost = jclCurrentCategory;
         }
 
-        parsedConfig.parent_expand = !!parseInt(parsedConfig.parent_expand, 10);
-        parsedConfig.showcount = !!parseInt(parsedConfig.showcount, 10);
-        parsedConfig.show_empty = !!parseInt(parsedConfig.show_empty, 10);
+        // parsedConfig.parent_expand = !!parseInt(parsedConfig.parent_expand, 10);
+        // parsedConfig.showcount = !!parseInt(parsedConfig.showcount, 10);
+        // parsedConfig.show_empty = !!parseInt(parsedonfig.show_empty, 10);
 
         updateContextConfig(parsedConfig);
     };

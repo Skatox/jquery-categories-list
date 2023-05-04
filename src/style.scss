@@ -5,13 +5,4 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-@font-face {
-	font-family: Gilbert;
-	src: url(../assets/gilbert-color.otf);
-	font-weight: 700;
-}
-
-.wp-block-categories-block-jquery-categories-list {
-	font-family: Gilbert, sans-serif;
-	font-size: 64px;
-}
+@import '../assets/css/jcl.css';
