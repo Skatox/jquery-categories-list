@@ -28,8 +28,8 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...useBlockProps() }>
-			<ConfigProvider>
-				<JsCategoriesList attributes={ attributes } />
+			<ConfigProvider attributes={attributes}>
+				<JsCategoriesList />
 			</ConfigProvider>
 			<InspectorControls key="setting">
 				<div className="jcl-controls">

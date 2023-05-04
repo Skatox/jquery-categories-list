@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {createContext, useState} from '@wordpress/element';
+import {createContext, useEffect, useState} from '@wordpress/element';
 
 export const defaultConfig = {
     title: '',
@@ -39,6 +39,10 @@ export const ConfigProvider = ({attributes, children}) => {
 
         updateContextConfig(parsedConfig);
     };
+
+    useEffect(() => {
+      setConfig( attributes );
+    }, [attributes])
 
     return (
         <ConfigContext.Provider value={{config, setConfig}}>

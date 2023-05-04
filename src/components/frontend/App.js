@@ -7,7 +7,7 @@ import JsCategoriesList from './JsCategoriesList';
 const App = ( { attributes } ) => {
 	return (
 		<ConfigProvider attributes={ attributes }>
-			<JsCategoriesList attributes={ attributes } />
+			<JsCategoriesList />
 		</ConfigProvider>
 	);
 };

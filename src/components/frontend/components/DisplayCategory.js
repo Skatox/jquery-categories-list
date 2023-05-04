@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -9,47 +9,66 @@ import { __ } from '@wordpress/i18n';
  */
 import { ConfigContext } from '../context/ConfigContext';
 import useApi from '../hooks/useApi';
+import { useDisplayClass } from '../hooks/useFrontend';
 
 import BulletWithSymbol from './BulletWithSymbol';
 import CategoryLink from './CategoryLink';
 
 const DisplayCategory = ( { category } ) => {
-	const { config, setConfig } = useContext( ConfigContext );
-	const [ expand, setExpand ] = useState( false );
-	// const [ loaded, setLoaded ] = useState( false );
 	const {
 		loading,
 		data: apiData,
 		apiClient: loadCategories,
 	} = useApi( '/jcl/v1/categories' );
 
-  const Toggler = () => (
+	const [ expand, setExpand ] = useState( false );
+	const { config } = useContext( ConfigContext );
+  const isLayoutLeft = useMemo(() => config.layout === 'left', [config]);
+	const displayClass = useDisplayClass( { expand, effect: config.effect } );
+
+  const handleToggle = (event) => {
+    event.preventDefault();
+    setExpand(!expand );
+  };
+
+  const Toggler = () => {
+    const totalChildCategories = parseInt( category.child_num, 10);
+
+    return totalChildCategories > 0 ? (
       <BulletWithSymbol
 				expanded={ expand }
 				title={ category.name }
 				permalink={ category.url }
-				onToggle={ () => setExpand( !expand ) }
+				onToggle={ handleToggle }
 			/>
-  );
+    ): (<div className="jcl_symbol no_child"></div>);
+  };
 
- //  useEffect( () => {
-	// 	if ( expand && ( ! apiData || ! Array.isArray( apiData.months ) ) ) {
-	// 		apiClient( config );
-	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [] );
+  useEffect( () => {
+		if ( expand && ( ! apiData || ! Array.isArray( apiData.months ) ) ) {
+			loadCategories( config, category.id );
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [expand] );
+
+  const className = `jcl_category jcl_category__${ category.id } ${displayClass}`;
 
 	return (
     <li>
-      { config.layout === 'left' ? <Toggler /> : '' }
-      <CategoryLink category={ category } />
-			{ apiData && category.count > 0 ? (
-				<ul className={ `jcl_categories jcl_category__${ category.id }` }>
+      { isLayoutLeft ? <Toggler /> : '' }
+      <CategoryLink category={ category } loading={loading} />
+			{ apiData && apiData.categories.length > 0 ? (
+				<ul className={ className }>
+        {
+          apiData.categories.map( ( category ) => (
+            <DisplayCategory key={ category.id } category={ category } />
+          ) )
+        }
 				</ul>
 			) : (
 				''
 			) }
-      { config.layout === 'right' ? <Toggler /> : '' }
+      { !isLayoutLeft ? <Toggler /> : '' }
 		</li>
 	);
 };

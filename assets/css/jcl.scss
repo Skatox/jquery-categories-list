@@ -121,6 +121,10 @@ body ul.jcl_widget, ul.jcl_widget ul {
 /** Bullet's padding **/
 .jcl_symbol {
 	margin-right: 0.5rem;
+  min-width: 16px;
+  min-height: 16px;
+
+  &.no_child { visibility: hidden; display: inline-block; }
 }
 
 

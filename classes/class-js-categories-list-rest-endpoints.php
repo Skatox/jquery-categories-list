@@ -81,10 +81,11 @@ class JS_Categories_List_Rest_Endpoints {
 
 		foreach ( $full_categories as $key => $category ) {
       $categories[] = [
-        'id'    => $category->term_id,
-        'name'  => $category->cat_name,
-        'count' => $category->count,
-        'url'   => esc_url( get_category_link( $category->term_id ) )
+        'id'        => $category->term_id,
+        'name'      => $category->cat_name,
+        'count'     => $category->count,
+        'url'       => esc_url( get_category_link( $category->term_id ) ),
+        'child_num' => count( get_term_children( $category->term_id, 'category' ) )
       ];
 		}
 

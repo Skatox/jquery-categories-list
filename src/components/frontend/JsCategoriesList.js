@@ -13,8 +13,8 @@ import useApi from './hooks/useApi';
 
 import Loading from './components/Loading';
 
-const JsCategoriesList = ( { attributes } ) => {
-	const { config, setConfig } = useContext( ConfigContext );
+const JsCategoriesList = () => {
+	const { config } = useContext( ConfigContext );
 	const [ loaded, setLoaded ] = useState( false );
 	const {
 		loading,
@@ -23,16 +23,9 @@ const JsCategoriesList = ( { attributes } ) => {
 		apiClient: loadCategories,
 	} = useApi( '/jcl/v1/categories' );
 
-	/* eslint-disable react-hooks/exhaustive-deps */
 	useEffect( () => {
-		setConfig( { ...config, ...attributes } );
-		loadCategories( config, 0 );
-	}, [] );
-
-	useEffect( () => {
-		setConfig( { ...config, ...attributes } );
     loadCategories( config );
-	}, [ attributes ] );
+	}, [ config ] );
 
 	useEffect( () => {
 		if ( ! loaded && ( error || loaded ) ) {
@@ -44,7 +37,7 @@ const JsCategoriesList = ( { attributes } ) => {
 		<div className="js-categories-list dynamic">
 			<h2>{ config.title }</h2>
 			{ loading ? <div><Loading loading={ loading } />{ __( 'Loading…', 'jcl_i18n' ) }</div> : '' }
-			{ apiData && apiData.categories ? (
+			{ !loading && apiData && apiData.categories ? (
 				<ul className="jcl_widget">
 					{ apiData.categories.length === 0 ? (
 						<li>{ __( 'There are no categories to show.', 'jcl_i18n' ) }</li>
