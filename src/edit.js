@@ -28,7 +28,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...useBlockProps() }>
-			<ConfigProvider attributes={attributes}>
+			<ConfigProvider attributes={ attributes }>
 				<JsCategoriesList />
 			</ConfigProvider>
 			<InspectorControls key="setting">
@@ -74,8 +74,8 @@ export default function Edit( { attributes, setAttributes } ) {
 									},
 									{
 										value: 'right',
-										label: __( 'Right', 'jcl_i18n'),
-									}
+										label: __( 'Right', 'jcl_i18n' ),
+									},
 								] }
 							/>
 							<SelectControl
@@ -119,10 +119,13 @@ export default function Edit( { attributes, setAttributes } ) {
 									},
 									{
 										value: 'count',
-										label: __( 'Entries count', 'jcl_i18n' ),
+										label: __(
+											'Entries count',
+											'jcl_i18n'
+										),
 									},
 									{
-										value:'slug',
+										value: 'slug',
 										label: __( 'Slug', 'jcl_i18n' ),
 									},
 								] }
@@ -151,10 +154,16 @@ export default function Edit( { attributes, setAttributes } ) {
 									setAttributes( { expand: val } )
 								}
 								options={ [
-									{ value: '', label: __( 'None', 'jcl_i18n' ) },
+									{
+										value: '',
+										label: __( 'None', 'jcl_i18n' ),
+									},
 									{
 										value: 'all',
-										label: __( 'All', 'jcl_i18n' ),
+										label: __(
+											'All (warning: requires too many ajax calls on load)',
+											'jcl_i18n'
+										),
 									},
 									{
 										value: 'sel_cat',
@@ -195,18 +204,6 @@ export default function Edit( { attributes, setAttributes } ) {
 										setAttributes( { show_empty: val } )
 									}
 								/>
-              </PanelRow>
-              <PanelRow>
-								<CheckboxControl
-									label={ __(
-										'Parent expand sub-categories',
-										'jcl_i18n'
-									) }
-									checked={ attributes.parent_expand }
-									onChange={ ( val ) =>
-										setAttributes( { parent_expand: val } )
-									}
-								/>
 							</PanelRow>
 						</PanelBody>
 					</Panel>
@@ -217,7 +214,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						>
 							<PanelRow>
 								<RadioControl
-									label={ __( 'Include or exclude', 'jcl_i18n' ) }
+									label={ __(
+										'Include or exclude',
+										'jcl_i18n'
+									) }
 									selected={ attributes.include_or_exclude }
 									options={ [
 										{

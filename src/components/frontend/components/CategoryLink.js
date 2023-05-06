@@ -1,16 +1,15 @@
 /**
  * WordPress dependencies
  */
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import { ConfigContext } from '../context/ConfigContext';
-import Loading from '../components/Loading';
 
-const CategoryLink = ( { category, loading } ) => {
+const CategoryLink = ( { category } ) => {
     const { config } = useContext( ConfigContext );
 
     let linkContent = category.name;
@@ -25,7 +24,6 @@ const CategoryLink = ( { category, loading } ) => {
             title={ category.name }
         >
             { linkContent }
-            <Loading loading={ loading } />
         </a>
     );
 };

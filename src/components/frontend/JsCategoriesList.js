@@ -24,7 +24,7 @@ const JsCategoriesList = () => {
 	} = useApi( '/jcl/v1/categories' );
 
 	useEffect( () => {
-    loadCategories( config );
+		loadCategories( config );
 	}, [ config ] );
 
 	useEffect( () => {
@@ -34,13 +34,25 @@ const JsCategoriesList = () => {
 	}, [ loaded, error ] );
 
 	return (
-		<div className="js-categories-list dynamic">
+		<div className={`js-categories-list dynamic layout-${config.layout}`}>
 			<h2>{ config.title }</h2>
-			{ loading ? <div><Loading loading={ loading } />{ __( 'Loading…', 'jcl_i18n' ) }</div> : '' }
-			{ !loading && apiData && apiData.categories ? (
+			{ loading ? (
+				<div>
+					<Loading loading={ loading } />
+					{ __( 'Loading…', 'jcl_i18n' ) }
+				</div>
+			) : (
+				''
+			) }
+			{ ! loading && apiData && apiData.categories ? (
 				<ul className="jcl_widget">
 					{ apiData.categories.length === 0 ? (
-						<li>{ __( 'There are no categories to show.', 'jcl_i18n' ) }</li>
+						<li>
+							{ __(
+								'There are no categories to show.',
+								'jcl_i18n'
+							) }
+						</li>
 					) : (
 						apiData.categories.map( ( category ) => (
 							<DisplayCategory
@@ -50,9 +62,12 @@ const JsCategoriesList = () => {
 						) )
 					) }
 				</ul>
-			) : ''
-			}
-			{ ( loaded || error ) && ! apiData ? __( 'Cannot load categories.', 'jcl_i18n' ) : '' }
+			) : (
+				''
+			) }
+			{ ( loaded || error ) && ! apiData
+				? __( 'Cannot load categories.', 'jcl_i18n' )
+				: '' }
 		</div>
 	);
 };

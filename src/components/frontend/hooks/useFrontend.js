@@ -9,13 +9,13 @@ export function useDisplayClass( { expand, effect } ) {
 	useEffect( () => {
 		switch ( effect ) {
 			case 'fade':
-				setClassName( expand ? 'jal-fade-in' : 'jal-fade-out' );
+				setClassName( expand ? 'jcl-fade-in' : 'jcl-fade-out' );
 				break;
 			case 'slide':
-				setClassName( expand ? 'jal-slide-down' : 'jal-slide-up' );
+				setClassName( expand ? 'jcl-slide-down' : 'jcl-slide-up' );
 				break;
 			default:
-				setClassName( expand ? 'jal-show' : 'jal-hide' );
+				setClassName( expand ? 'jcl-show' : 'jcl-hide' );
 				break;
 		}
 	}, [ expand, effect ] );
@@ -23,14 +23,14 @@ export function useDisplayClass( { expand, effect } ) {
 	return className;
 }
 
-export function useSymbol( symbol ) {
+export function useSymbol( symbol, layout = 'left' ) {
 	let collapseSymbol = '';
 	let expandSymbol = '';
 
 	switch ( symbol.toString() ) {
 		case '1':
 			collapseSymbol = '▼';
-			expandSymbol = '►';
+			expandSymbol = layout === 'left' ? '►' : '◄';
 			break;
 		case '2':
 			collapseSymbol = '(–)';
@@ -45,3 +45,9 @@ export function useSymbol( symbol ) {
 	return { collapseSymbol, expandSymbol };
 }
 
+export function initialExpand( config, categoryId ) {
+  if ( config.expand === 'all' ) return true;
+
+  return config.expand === 'sel_cat' && 
+    config.expandCategories.includes(categoryId);
+}

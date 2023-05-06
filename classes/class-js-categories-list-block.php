@@ -77,4 +77,38 @@ class JS_Categories_List_Block {
 				: '',
     );
 	}
+
+	/**
+	 * Registers current post's month and year as JS variable so frontend can access it
+	 *
+	 * @return void
+	 */
+	public function inject_post_data() {
+		if (is_category()) {
+      $category_id = get_queried_object_id();
+      $category_and_parents = [];
+
+      $category_and_parents[] = $category_id;
+      $parent_category_ids = get_ancestors($category_id, 'category');
+
+      // var_dump($parent_category_ids);die;
+
+      while (!empty($parent_category_ids)) {
+        $parent_category_id = array_shift($parent_category_ids);
+
+        $category_and_parents[] = $parent_category_id;
+        $grandparent_category_ids = get_ancestors($parent_category_id, 'category');
+        $parent_category_ids = array_merge($parent_category_ids, $grandparent_category_ids);
+      }
+
+      printf(
+        '<script type="text/javascript">var jclCurrentCat="%s";</script>',
+        implode(',', array_unique($category_and_parents))
+      );
+		}
+	}
 }
+
+// Adds current category's tree to the JS variable so widget can check it.
+$jalw_frontend = JS_Categories_List_Block::instance();
+add_action( 'wp_footer', [ $jalw_frontend, 'inject_post_data' ] );

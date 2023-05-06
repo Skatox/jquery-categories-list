@@ -15,16 +15,16 @@ export default function useApi( url ) {
 	const [ loading, setLoading ] = useState( false );
 
 	/* global jclCurrentCat */
-	const apiClient = async function( config, parent = 0, callback = null ) {
+	const apiClient = async function ( config, parent = 0, callback = null ) {
 		setLoading( true );
 
 		const params = new URLSearchParams( {
 			orderby: config.orderby,
 			orderdir: config.orderdir,
-      parent: parent,
+			parent,
 			showEmpty: config.show_empty,
-      taxonomy: 'category',
-      type: 'post',
+			taxonomy: 'category',
+			type: 'post',
 		} );
 
 		if ( typeof jclCurrentCat !== 'undefined' && config.onlycategory > 0 ) {
@@ -45,11 +45,10 @@ export default function useApi( url ) {
 				}
 			} )
 			.catch( ( e ) => {
-        setLoading( false );
-        setError( e );
-      });
+				setLoading( false );
+				setError( e );
+			} );
 	};
 
 	return { apiClient, data, error, loading, setLoading };
 }
-

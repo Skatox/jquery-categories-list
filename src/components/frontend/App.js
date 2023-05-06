@@ -13,4 +13,3 @@ const App = ( { attributes } ) => {
 };
 
 export default App;
-

@@ -10,6 +10,7 @@
   "textdomain": "jcl_i18n",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
+  "viewScript": "file:view.js",
   "style": "file:./style-index.css",
   "supports": {
     "multiple": true
@@ -71,10 +72,6 @@
         "sel_cat"
       ],
       "default": ""
-    },
-    "parent_expand": {
-      "type": "boolean",
-      "default": false
     },
     "showcount": {
       "type": "boolean",

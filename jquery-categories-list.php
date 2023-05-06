@@ -40,7 +40,17 @@ require_once( 'classes/class-js-categories-list-block.php' );
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function jcl_create_widget_block() {
-	register_block_type( __DIR__ . '/build' );
+  register_block_type(
+    __DIR__ . '/build',
+    [
+			'render_callback' => [ JS_Categories_List_Block::instance(), 'build_html' ]
+		]
+  );
+
+	wp_set_script_translations(
+		'jcl_i18n-script', 'jcl_i18n',
+		plugin_dir_path( __FILE__ ) . 'languages'
+	);
 }
 
 add_action( 'init', 'jcl_create_widget_block' );
