@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -23,11 +22,12 @@ const DisplayCategory = ( { category } ) => {
 	} = useApi( '/jcl/v1/categories' );
 
 	const { config } = useContext( ConfigContext );
-  const initialExpandVal = initialExpand( config, category.id ) ;
+	const initialExpandVal = initialExpand( config, category.id );
 	const [ expand, setExpand ] = useState( initialExpandVal );
 
 	const isLayoutLeft = useMemo( () => config.layout === 'left', [ config ] );
 	const displayClass = useDisplayClass( { expand, effect: config.effect } );
+	const hasChilds = parseInt( category.child_num, 10 ) > 0;
 
 	const handleToggle = ( event ) => {
 		event.preventDefault();
@@ -35,9 +35,7 @@ const DisplayCategory = ( { category } ) => {
 	};
 
 	const Toggler = () => {
-		const totalChildCategories = parseInt( category.child_num, 10 );
-
-		return totalChildCategories > 0 ? (
+		return hasChilds ? (
 			<BulletWithSymbol
 				expanded={ expand }
 				permalink={ category.url }
@@ -50,7 +48,10 @@ const DisplayCategory = ( { category } ) => {
 	};
 
 	useEffect( () => {
-		if ( expand && ( ! apiData || ! Array.isArray( apiData.categories ) ) ) {
+		if (
+			expand &&
+			( ! apiData || ! Array.isArray( apiData.categories ) )
+		) {
 			loadCategories( config, category.id );
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,12 +65,15 @@ const DisplayCategory = ( { category } ) => {
 			<CategoryLink category={ category } />
 			{ ! isLayoutLeft ? <Toggler /> : '' }
 			<Loading loading={ loading } />
-			{ apiData && apiData.categories.length > 0 ? (
+			{ expand &&
+			hasChilds &&
+			apiData &&
+			apiData.categories.length > 0 ? (
 				<ul className={ className }>
-					{ apiData.categories.map( ( category ) => (
+					{ apiData.categories.map( ( subCategory ) => (
 						<DisplayCategory
-							key={ category.id }
-							category={ category }
+							key={ subCategory.id }
+							category={ subCategory }
 						/>
 					) ) }
 				</ul>

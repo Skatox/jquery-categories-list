@@ -37,7 +37,7 @@ class JS_Categories_List_Block {
 		$this->set_attributes( $attributes );
 
 		return sprintf(
-			'<div id="app" %s %s></div>',
+			'<div %s %s></div>',
 			get_block_wrapper_attributes(),
 			$this->print_attributes()
 		);

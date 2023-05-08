@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { createContext, useEffect, useState } from '@wordpress/element';
-import JsCategoriesList from '../JsCategoriesList';
 
 export const defaultConfig = {
 	title: '',
 	symbol: '0',
 	effect: 'none',
-	layout: 'left',
+	layout: 'right',
 	expand: '',
 	orderby: 'name',
 	orderdir: 'ASC',
@@ -26,11 +25,13 @@ export const ConfigProvider = ( { attributes, children } ) => {
 
 	const setConfig = ( newConfig ) => {
 		const parsedConfig = { ...defaultConfig, ...newConfig };
-    
-    /* global jclCurrentCat */
-    if ( typeof jclCurrentCat !== 'undefined' ) {
-      parsedConfig.expandCategories = jclCurrentCat.split(",").map(Number);
-    }
+
+		/* global jclCurrentCat */
+		if ( typeof jclCurrentCat !== 'undefined' ) {
+			parsedConfig.expandCategories = jclCurrentCat
+				.split( ',' )
+				.map( Number );
+		}
 
 		updateContextConfig( parsedConfig );
 	};

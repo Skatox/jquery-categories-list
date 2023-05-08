@@ -46,8 +46,10 @@ export function useSymbol( symbol, layout = 'left' ) {
 }
 
 export function initialExpand( config, categoryId ) {
-  if ( config.expand === 'all' ) return true;
+	if ( config.expand === 'all' ) return true;
 
-  return config.expand === 'sel_cat' && 
-    config.expandCategories.includes(categoryId);
+	return (
+		config.expand === 'sel_cat' &&
+		config.expandCategories.includes( categoryId )
+	);
 }

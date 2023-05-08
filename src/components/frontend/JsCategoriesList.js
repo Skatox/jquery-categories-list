@@ -25,7 +25,8 @@ const JsCategoriesList = () => {
 
 	useEffect( () => {
 		loadCategories( config );
-	}, [ config ] );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
 
 	useEffect( () => {
 		if ( ! loaded && ( error || loaded ) ) {
@@ -34,7 +35,7 @@ const JsCategoriesList = () => {
 	}, [ loaded, error ] );
 
 	return (
-		<div className={`js-categories-list dynamic layout-${config.layout}`}>
+		<div className={ `js-categories-list layout-${ config.layout }` }>
 			<h2>{ config.title }</h2>
 			{ loading ? (
 				<div>

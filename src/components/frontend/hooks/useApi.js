@@ -15,7 +15,7 @@ export default function useApi( url ) {
 	const [ loading, setLoading ] = useState( false );
 
 	/* global jclCurrentCat */
-	const apiClient = async function ( config, parent = 0, callback = null ) {
+	const apiClient = async function ( config, parent = 0 ) {
 		setLoading( true );
 
 		const params = new URLSearchParams( {
@@ -40,9 +40,6 @@ export default function useApi( url ) {
 			.then( ( response ) => {
 				setData( response );
 				setLoading( false );
-				if ( callback ) {
-					callback( response );
-				}
 			} )
 			.catch( ( e ) => {
 				setLoading( false );

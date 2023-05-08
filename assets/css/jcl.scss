@@ -63,7 +63,6 @@ body ul.jcl_widget, ul.jcl_widget ul {
 
 .wp-block-js-categories-list-categories-widget ul.jcl_widget li,
 .jcl_widget ul li {
-	padding-left: 1rem;
 	list-style: none;
 }
 
@@ -117,25 +116,45 @@ body ul.jcl_widget, ul.jcl_widget ul {
     }
 }
 
+.widget {
+  .jcl_widget {
+    ul {
+      ul {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+}
+
+.jcl_widget {
+  li {
+    a {
+      display: inline-block
+    }
+  }
+}
+
 
 /** Bullet's padding **/
 .jcl_symbol {
-  min-width: 16px;
+  width: 16px;
   min-height: 16px;
 }
 
+$symbol_padding: 5px;
 .layout-left {
-  .no_child {
-    display: inline-block; 
-  }
-
   .jcl_symbol {
-    margin-right: 0.5rem;
+    margin-right: $symbol_padding;
+    display: inline-block; 
   }
 }
 
 .layout-right {
-  .no_child {
+  .jcl_symbol {
+    margin-left: $symbol_padding;
+  }
+
+  .no_child {  
     display: none; 
   }
 }

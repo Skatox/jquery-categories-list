@@ -11,15 +11,15 @@ import { useSymbol } from '../hooks/useFrontend';
 
 const BulletWithSymbol = ( { expanded, title, permalink, onToggle } ) => {
 	const { config } = useContext( ConfigContext );
-
-  if (config.symbol.toString() === '0' ) {
-    return null;
-  }
-
 	const { expandSymbol, collapseSymbol } = useSymbol(
 		config.symbol,
 		config.layout
 	);
+
+	if ( config.symbol.toString() === '0' ) {
+		return null;
+	}
+
 	const expandedClass = expanded ? 'expanded' : '';
 	const symbol = expanded ? collapseSymbol : expandSymbol;
 

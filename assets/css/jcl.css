@@ -59,7 +59,6 @@ body ul.jcl_widget, ul.jcl_widget ul {
 
 .wp-block-js-categories-list-categories-widget ul.jcl_widget li,
 .jcl_widget ul li {
-  padding-left: 1rem;
   list-style: none;
 }
 
@@ -109,19 +108,28 @@ body ul.jcl_widget, ul.jcl_widget ul {
     height: 0;
   }
 }
+.widget .jcl_widget ul ul {
+  margin-left: 0.5rem;
+}
+
+.jcl_widget li a {
+  display: inline-block;
+}
+
 /** Bullet's padding **/
 .jcl_symbol {
-  min-width: 16px;
+  width: 16px;
   min-height: 16px;
 }
 
-.layout-left .no_child {
+.layout-left .jcl_symbol {
+  margin-right: 5px;
   display: inline-block;
 }
-.layout-left .jcl_symbol {
-  margin-right: 0.5rem;
-}
 
+.layout-right .jcl_symbol {
+  margin-left: 5px;
+}
 .layout-right .no_child {
   display: none;
 }

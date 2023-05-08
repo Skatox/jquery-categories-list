@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useContext } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -10,22 +9,19 @@ import { __ } from '@wordpress/i18n';
 import { ConfigContext } from '../context/ConfigContext';
 
 const CategoryLink = ( { category } ) => {
-    const { config } = useContext( ConfigContext );
+	const { config } = useContext( ConfigContext );
 
-    let linkContent = category.name;
+	let linkContent = category.name;
 
-    if ( config.showcount ) {
-        linkContent += ` (${ category.count })`;
-    }
+	if ( config.showcount ) {
+		linkContent += ` (${ category.count })`;
+	}
 
-    return (
-        <a
-            href={ category.url }
-            title={ category.name }
-        >
-            { linkContent }
-        </a>
-    );
+	return (
+		<a href={ category.url } title={ category.name }>
+			{ linkContent }
+		</a>
+	);
 };
 
 export default CategoryLink;
