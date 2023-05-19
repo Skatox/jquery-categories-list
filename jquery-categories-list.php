@@ -28,7 +28,8 @@ if ( ! defined( 'JCL_VERSION' ) ) {
 	define( 'JCL_VERSION', '4.0.0' );
 }
 
-require_once( 'classes/class-js-categories-list-options.php' );
+require_once( 'classes/legacy/class-jcl-legacy-html-builder.php' );
+require_once( 'classes/legacy/class-jcl-legacy-widget.php' );
 require_once( 'classes/class-js-categories-list-rest-endpoints.php' );
 require_once( 'classes/class-js-categories-list-block.php' );
 
@@ -40,12 +41,12 @@ require_once( 'classes/class-js-categories-list-block.php' );
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 function jcl_create_widget_block() {
-  register_block_type(
-    __DIR__ . '/build',
-    [
+	register_block_type(
+		__DIR__ . '/build',
+		[
 			'render_callback' => [ JS_Categories_List_Block::instance(), 'build_html' ]
 		]
-  );
+	);
 
 	wp_set_script_translations(
 		'jcl_i18n-script', 'jcl_i18n',

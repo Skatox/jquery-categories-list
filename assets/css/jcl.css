@@ -28,13 +28,13 @@
 }
 
 .jcl-slide-up {
-  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
   max-height: 0;
+  animation: slideUp 0.5s forwards;
 }
 
 .jcl-slide-down {
   max-height: 1000px;
-  transition: max-height 1s ease-in-out;
+  animation: slideDown 0.5s ease-in-out;
 }
 
 .jcl-slide-up, .jcl-slide-down {
@@ -53,7 +53,6 @@ body .wp-block-js-categories-list-categories-widget ul.jcl_widget,
 body .wp-block-js-categories-list-categories-widget ul.jcl_widget ul,
 body ul.jcl_widget, ul.jcl_widget ul {
   list-style: none;
-  margin-left: 0;
   padding-left: 0;
 }
 
@@ -108,10 +107,6 @@ body ul.jcl_widget, ul.jcl_widget ul {
     height: 0;
   }
 }
-.widget .jcl_widget ul ul {
-  margin-left: 0.5rem;
-}
-
 .jcl_widget li a {
   display: inline-block;
 }
