@@ -148,28 +148,23 @@ class JCL_Legacy_HTML_Builder {
 			}
 
 			//Gets the code for children.
-			$show_children = in_array( $category->cat_ID, $this->ids_to_expand );
-			$expand_child  = $override_show_children || $show_children;
-
-			if ( $show_children ) {
-				$expand_child = true;
-
-				if ( $this->config['parent_expand'] ) {
-					$override_show_children = true;
-				}
-			}
-
-			$child_html = $this->print_category( $category->cat_ID, $override_show_children );
-			$cat_link   = $this->create_category_link( $category, $expand_child );
-
-			$has_child   = ! empty( $child_html );
-			$symbol_link = $has_child ? $this->create_toggle_link( $category, $expand_child ) : '';
+			$child_html   = $this->print_category( $category->cat_ID, (bool) $this->config['parent_expand'] );
+			$has_child    = ! empty( $child_html );
+			$expand_child = $override_show_children || in_array( $category->cat_ID, $this->ids_to_expand );
+			$symbol_link  = $has_child ? $this->create_toggle_link( $category, $expand_child ) : '';
 
 			$html .= sprintf( '<li class="jcl_category %s">', $expand_child ? 'expanded' : '' );
-			$html .= $this->config['layout'] === 'right' ? $cat_link . $symbol_link : $symbol_link . $cat_link;
+
+			$cat_link = $this->create_category_link( $category, $expand_child );
+			$html     .= $this->config['layout'] === 'right' ? $cat_link . $symbol_link : $symbol_link . $cat_link;
 
 			if ( $has_child ) {
-				$html .= sprintf( '<ul class="%s">%s</ul>', $this->display_class( $expand_child ), $child_html );
+				$html .= sprintf(
+					'<ul class="%s" %s>%s</ul>',
+					$this->display_class( $expand_child ),
+					$expand_child ? '' : 'style="display: none;"',
+					$child_html
+				);
 			}
 
 			$html .= '</li>';
@@ -238,7 +233,7 @@ class JCL_Legacy_HTML_Builder {
 		$symbol_key = $expand_child_cat ? 'con_sym' : 'ex_sym';
 
 		return sprintf(
-			'<a href="%s" class="jcl_link" title="%s">%s</a>',
+			'<a href="%s" class="jcl_symbol" title="%s">%s</a>',
 			esc_attr( get_category_link( $category->term_id ) ),
 			esc_attr( __( 'View Sub-Categories', 'jcl_i18n' ) ),
 			htmlspecialchars( $this->config[ $symbol_key ] )
