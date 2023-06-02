@@ -20,7 +20,7 @@ const BulletWithSymbol = ( { expanded, title, permalink, onToggle } ) => {
 		return null;
 	}
 
-	const expandedClass = expanded ? 'expanded' : '';
+	const expandedClass = 'jcl_symbol ' + ( expanded ? 'expanded' : '' );
 	const symbol = expanded ? collapseSymbol : expandSymbol;
 
 	// Do not show the component if it's disabled in the options.
@@ -35,7 +35,7 @@ const BulletWithSymbol = ( { expanded, title, permalink, onToggle } ) => {
 			className={ expandedClass }
 			onClick={ onToggle }
 		>
-			<span className="jcl_symbol">{ symbol }</span>
+			{ symbol }
 		</a>
 	);
 };

@@ -42,6 +42,8 @@ describe( 'Display categories', () => {
 		},
 	];
 
+	const animationFunction = jest.fn();
+
 	beforeEach( () => {
 		jest.clearAllMocks();
 	} );
@@ -55,7 +57,10 @@ describe( 'Display categories', () => {
 		} );
 		const { getByRole } = render(
 			<ConfigContext.Provider value={ { config } }>
-				<DisplayCategory category={ category } />
+				<DisplayCategory
+					category={ category }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 
@@ -74,7 +79,10 @@ describe( 'Display categories', () => {
 
 		const { findByRole } = render(
 			<ConfigContext.Provider value={ { config: defaultConfig } }>
-				<DisplayCategory category={ category } />
+				<DisplayCategory
+					category={ category }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 
@@ -92,7 +100,10 @@ describe( 'Display categories', () => {
 
 		const { queryByRole } = render(
 			<ConfigContext.Provider value={ { config: defaultConfig } }>
-				<DisplayCategory category={ noChildCategory } />
+				<DisplayCategory
+					category={ noChildCategory }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 
@@ -107,7 +118,10 @@ describe( 'Display categories', () => {
 
 		const { queryByText } = render(
 			<ConfigContext.Provider value={ { config } }>
-				<DisplayCategory category={ category } />
+				<DisplayCategory
+					category={ category }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 		expect( queryByText( symbol.expandSymbol ) ).toBeInTheDocument();
@@ -122,7 +136,10 @@ describe( 'Display categories', () => {
 
 		const { queryByText } = render(
 			<ConfigContext.Provider value={ { config } }>
-				<DisplayCategory category={ noChildCategory } />
+				<DisplayCategory
+					category={ noChildCategory }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 
@@ -142,13 +159,18 @@ describe( 'Display categories', () => {
 
 		const { container, getByText } = render(
 			<ConfigContext.Provider value={ { config } }>
-				<DisplayCategory category={ category } />
+				<DisplayCategory
+					category={ category }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 
 		fireEvent.click( getByText( symbol.expandSymbol ) );
 
-		const postList = container.querySelector( 'ul.jcl_category' );
+		expect( animationFunction ).toHaveBeenCalled();
+
+		const postList = container.querySelector( 'ul.jcl-hide' );
 		expect( postList.children ).toHaveLength( subCategories.length );
 	} );
 
@@ -165,7 +187,10 @@ describe( 'Display categories', () => {
 
 		const { getByRole } = render(
 			<ConfigContext.Provider value={ { config } }>
-				<DisplayCategory category={ category } />
+				<DisplayCategory
+					category={ category }
+					animationFunction={ animationFunction }
+				/>
 			</ConfigContext.Provider>
 		);
 

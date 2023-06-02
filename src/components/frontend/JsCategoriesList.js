@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import DisplayCategory from './components/DisplayCategory.js';
+import useAnimation from './hooks/useAnimation';
 import { ConfigContext } from './context/ConfigContext';
 import useApi from './hooks/useApi';
 
@@ -23,9 +24,11 @@ const JsCategoriesList = () => {
 		apiClient: loadCategories,
 	} = useApi( '/jcl/v1/categories' );
 
+	const animationFunction = useAnimation( config.effect );
+
 	useEffect( () => {
 		loadCategories( config );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [] );
 
 	useEffect( () => {
@@ -59,6 +62,7 @@ const JsCategoriesList = () => {
 							<DisplayCategory
 								key={ category.id }
 								category={ category }
+								animationFunction={ animationFunction }
 							/>
 						) )
 					) }

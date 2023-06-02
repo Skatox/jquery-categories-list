@@ -1,20 +1,26 @@
 /**
  * WordPress dependencies
  */
-import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
+import {
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { ConfigContext } from '../context/ConfigContext';
 import useApi from '../hooks/useApi';
-import { useDisplayClass, initialExpand } from '../hooks/useFrontend';
+import { initialExpand } from '../hooks/useFrontend';
 
 import BulletWithSymbol from './BulletWithSymbol';
 import CategoryLink from './CategoryLink';
 import Loading from './Loading';
 
-const DisplayCategory = ( { category } ) => {
+const DisplayCategory = ( { category, animationFunction } ) => {
 	const {
 		loading,
 		data: apiData,
@@ -22,16 +28,31 @@ const DisplayCategory = ( { category } ) => {
 	} = useApi( '/jcl/v1/categories' );
 
 	const { config } = useContext( ConfigContext );
-	const initialExpandVal = initialExpand( config, category.id );
-	const [ expand, setExpand ] = useState( initialExpandVal );
+	const [ expand, setExpand ] = useState(
+		initialExpand( config, category.id )
+	);
 
 	const isLayoutLeft = useMemo( () => config.layout === 'left', [ config ] );
-	const displayClass = useDisplayClass( { expand, effect: config.effect } );
 	const hasChilds = parseInt( category.child_num, 10 ) > 0;
+	const listElement = useRef( null );
 
-	const handleToggle = ( event ) => {
+	const handleToggle = async ( event ) => {
 		event.preventDefault();
+
+		if ( ! apiData || ! Array.isArray( apiData.categories ) ) {
+			await loadCategories( config, category.id );
+		}
+
 		setExpand( ! expand );
+	};
+
+	const animateList = () => {
+		const categoriesList = [ ...listElement.current.children ].filter(
+			( ch ) => ch.nodeName.toLowerCase() === 'ul'
+		);
+
+		if ( categoriesList.length > 0 )
+			animationFunction( categoriesList[ 0 ] );
 	};
 
 	const Toggler = () => {
@@ -54,26 +75,28 @@ const DisplayCategory = ( { category } ) => {
 		) {
 			loadCategories( config, category.id );
 		}
+
+		animateList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ expand ] );
 
-	const className = `jcl_category jcl_category__${ category.id } ${ displayClass }`;
+	const childClassName = initialExpand( config, category.id )
+		? ''
+		: 'jcl-hide';
 
 	return (
-		<li>
+		<li ref={ listElement }>
 			{ isLayoutLeft ? <Toggler /> : '' }
 			<CategoryLink category={ category } />
 			{ ! isLayoutLeft ? <Toggler /> : '' }
 			<Loading loading={ loading } />
-			{ expand &&
-			hasChilds &&
-			apiData &&
-			apiData.categories.length > 0 ? (
-				<ul className={ className }>
+			{ hasChilds && apiData && apiData.categories.length > 0 ? (
+				<ul className={ childClassName }>
 					{ apiData.categories.map( ( subCategory ) => (
 						<DisplayCategory
 							key={ subCategory.id }
 							category={ subCategory }
+							animationFunction={ animationFunction }
 						/>
 					) ) }
 				</ul>
