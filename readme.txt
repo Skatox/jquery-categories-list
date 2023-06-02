@@ -1,10 +1,10 @@
 === JS Categories List Widget ===
 Contributors: skatox
-Donate link: http://skatox.com/blog/jquery-categories-list-widget/
+Donate link: https://skatox.com/blog/jquery-categories-list-widget/
 Tags: jquery, ajax, javascript, collapse, collapsible, categories, collapsible categories, widget, category
 Requires at least: 5.8
-Tested up to: 6.2
-Stable tag: 2.2.5
+Tested up to: 6.2.2
+Stable tag: 4.0.0
 
 A simple JS widget (can be called from posts) for displaying categories in a list with some effects.
 
@@ -13,8 +13,9 @@ A simple JS widget (can be called from posts) for displaying categories in a lis
 This plugin provides a widget and a filter to display a collapsible list of categories in your sidebar or posts by using vanilla Javascript.
 
 = Features =
- 1. Display a collapsed list of your categories to reduce space.
- 1. It uses Javascript for effects and to make them work with most browsers.
+ 1. Support for Gutenberg blocks. Add it to any FSE theme or Gutenberg compatible theme.
+ 1. Display a collapsed list of your archives to reduce space.
+ 1. Uses vanilla JS to add effects and to be compatible with all browsers.
  1. Select the symbol for expanding/collapsing categories
  1. Select categories to exclude, so it shows only the categories you want.
  1. Autoexpand selected category (including it parent or child).
@@ -22,6 +23,7 @@ This plugin provides a widget and a filter to display a collapsible list of cate
  1. Simple layout configuration
  1. Shortcode support  *[JsCategoriesList]*
  1. Translated to Spanish, Italian Russian, Slovak, Czech.
+ 1. Compatible with most JS cache and minify plugins.
  1. And more to come...
 
 == Installation ==
@@ -29,21 +31,26 @@ This plugin provides a widget and a filter to display a collapsible list of cate
 1. Make a directory `jquery-categories-list` under `/wp-content/plugins/`
 1. Upload  all downloaded files to `/wp-content/plugins/jquery-categories-list/`
 1. Activate plugin at the plugins section.
-1. Go to Presentation -> Widgets and drag the jQuery Categories List to your sidebar and configure it, if you want to display it inside a post then write [jQueryCategoriesList] at the location where it will be shown and save it.
+1. Go to Presentation -> Widgets and drag the JS Categories List to your sidebar and configure it, if you want to display it inside a post then write [JsCategoriesList] at the location where it will be shown and save it.
 
 == Configuration ==
 
 * Title: title of the widget.
 * Trigger Symbol:  characters to be displayed as a bullet.
 * Symbol position: where to put the expand/collapse symbol.
-* Effect: jQuery's effect to use.
+* Effect: JS's effect to use.
 * Order by: display order of categories.
 * Expand: if list should be expanded or callapsed by default.
 * Show number of posts: display how many post are published in the category.
 * Show empty categories: display categories with no posts.
+* Categories to include: categories to be included from the list.
 * Categories to exclude: categories to be excluded from the list.
 
 == Frequently Asked Questions ==
+
+= Why there are 2 widgets? =
+
+Since version 4.0 the widget was migrated to a Gutenberg block. So there will be a Gutenberg block with the most modern code and compatibility and a legacy version that is 100% made in PHP to keep compatibility with older installations.
 
 = Why this plugin is not working? =
 
@@ -51,7 +58,7 @@ By support experience, like 99% of problems are due to:
 
 * There's a Javascript error caused by other plugin and it stops any further code execution, check your browser's logs to find the problem and deactivate the conflict plugin.
 * Your template doesn't have a wp_footer() function, this plugin requires this function to load JS code at the end of the website to improve speed.
-* You're using a plugin that removes Wordpress' jQuery version and inserts an old one.
+* You're using a plugin that removes Wordpress' JS version and inserts an old one.
 
 = How I can send you a translation? =
 
@@ -71,7 +78,7 @@ replaced for the archive list when rendering the content.  You can add the follo
 1. **'layout'** ( "right", "left" ): where to display the symbol
 1. **ex_sym**: the expansion symbol.
 1. **con_sym**: the collapse symbol.
-1. **fx_in** ("none", "slideDown", "fadeIn"): the jQuery effect to implement.
+1. **effect** ("none", "slide", "fade"): the JS effect to implement.
 1. **orderby** ("name","id", "count"): how to order categories.
 1. **orderdir** ("ASC", "DESC"): the direction to order categories.
 1. **show_empty'** ( boolean ): show categories with no posts.
