@@ -45,7 +45,7 @@ class JCL_Legacy_Widget extends WP_Widget {
 		$self = self::instance();
 
 		add_shortcode( 'jQueryCategoriesList', [ $self, 'filter' ] );
-		add_shortcode( 'JSCategoriesList', [ $self, 'filter' ] );
+		add_shortcode( 'JsCategoriesList', [ $self, 'filter' ] );
 		add_filter( 'widget_text', 'do_shortcode' );
 
 		if ( function_exists( 'load_plugin_textdomain' ) ) {
@@ -121,7 +121,7 @@ class JCL_Legacy_Widget extends WP_Widget {
 	}
 
 	protected function print_data_attrs() {
-		$required_vals = [ 'fx_in', 'ex_sym', 'con_sym' ];
+		$required_vals = [ 'effect', 'ex_sym', 'con_sym' ];
 		$data_attrs    = '';
 
 		foreach ( $required_vals as $val ) {
@@ -378,9 +378,12 @@ class JCL_Legacy_Widget extends WP_Widget {
 	 */
 	public function filter( $attr ) {
 		$this->enqueue_scripts();
-		$instance            = shortcode_atts( $this->defaults, $attr );
-		$instance['exclude'] = serialize( explode( ',', $instance['exclude'] ) );
-		$this->config        = $instance;
+		$instance = shortcode_atts( $this->defaults, $attr );
+    
+    if (!empty($instance['exclude']))
+      $instance['exclude'] = serialize( explode( ',', $instance['exclude'] ) );
+    
+		$this->config = $instance;
 
 		return $this->build_html();
 	}

@@ -133,11 +133,11 @@ const jclFunctions = {
 function jsCategoriesListAnimate( clickedObj, listElements, options ) {
 	let toggleFunction;
 
-	switch ( options.fxIn ) {
-		case 'fadeIn':
+	switch ( options.effect ) {
+		case 'fade':
 			toggleFunction = jclFunctions.fadeToggle;
 			break;
-		case 'slideDown':
+		case 'slide':
 			toggleFunction = jclFunctions.slideToggle;
 			break;
 		default:
@@ -190,7 +190,7 @@ function jsArchiveListEvents() {
 			widget.classList.remove( 'preload' );
 
 			const options = {
-				fxIn: widget.dataset.fx_in,
+				effect: widget.dataset.effect,
 				expSym: widget.dataset.ex_sym,
 				conSym: widget.dataset.con_sym,
 			};

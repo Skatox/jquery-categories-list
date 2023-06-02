@@ -1,28 +1,3 @@
-/**
- * WordPress dependencies
- */
-import { useState, useEffect } from '@wordpress/element';
-
-export function useDisplayClass( { expand, effect } ) {
-	const [ className, setClassName ] = useState( '' );
-
-	useEffect( () => {
-		switch ( effect ) {
-			case 'fade':
-				setClassName( expand ? 'jcl-fade-in' : 'jcl-fade-out' );
-				break;
-			case 'slide':
-				setClassName( expand ? 'jcl-slide-down' : 'jcl-slide-up' );
-				break;
-			default:
-				setClassName( expand ? 'jcl-show' : 'jcl-hide' );
-				break;
-		}
-	}, [ expand, effect ] );
-
-	return className;
-}
-
 export function useSymbol( symbol, layout = 'left' ) {
 	let collapseSymbol = '';
 	let expandSymbol = '';

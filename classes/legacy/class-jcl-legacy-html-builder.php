@@ -160,8 +160,7 @@ class JCL_Legacy_HTML_Builder {
 
 			if ( $has_child ) {
 				$html .= sprintf(
-					'<ul class="%s" %s>%s</ul>',
-					$this->display_class( $expand_child ),
+					'<ul %s>%s</ul>',
 					$expand_child ? '' : 'style="display: none;"',
 					$child_html
 				);
@@ -195,30 +194,6 @@ class JCL_Legacy_HTML_Builder {
 		$html .= '</a>';
 
 		return $html;
-	}
-
-	/**
-	 * Returns the correct CSS class to set default
-	 * visibility of the element.
-	 *
-	 * @param boolean $expand If expand year/month should be done or not.
-	 *
-	 * @return string Css class to show/hide element.
-	 */
-	protected function display_class( $expand ) {
-		switch ( $this->config['effect'] ) {
-			case 'fade':
-				$cssClass = $expand ? 'jcl-fade-in' : 'jcl-fade-out';
-				break;
-			case 'slide':
-				$cssClass = $expand ? 'jcl-slide-down' : 'jcl-slide-up';
-				break;
-			default:
-				$cssClass = $expand ? 'jcl-show' : 'jcl-hide';
-				break;
-		}
-
-		return $cssClass;
 	}
 
 	/**

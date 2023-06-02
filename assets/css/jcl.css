@@ -8,16 +8,8 @@
   width: 25px;
 }
 
-.jcl-show {
-  display: block;
-}
-
 .jcl-hide {
   display: none;
-}
-
-.jcl_widget.preload .jcl-fade-out {
-  animation-duration: 0s;
 }
 
 body .wp-block-js-categories-list-categories-widget ul.jcl_widget,
@@ -32,54 +24,6 @@ body ul.jcl_widget, ul.jcl_widget ul {
   list-style: none;
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-    height: auto;
-  }
-  99% {
-    display: block;
-    height: auto;
-  }
-  100% {
-    opacity: 0;
-    height: 0;
-    display: none;
-  }
-}
-@keyframes slideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(100%);
-  }
-}
-@keyframes slideUp {
-  0% {
-    height: auto;
-    display: none;
-    transform: scaleY(1);
-  }
-  99% {
-    height: auto;
-    transform: scaleY(0);
-  }
-  100% {
-    display: block;
-    height: 0;
-  }
-}
 .jcl_widget li a {
   display: inline-block;
 }
