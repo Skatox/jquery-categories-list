@@ -1,0 +1,311 @@
+# Copyright (C) 2023 Miguel Angel Useche Castro
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: JS Categories List Block 4.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jquery-categories-list\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-06-02T19:20:46-04:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: jcl_i18n\n"
+
+#. Plugin Name of the plugin
+msgid "JS Categories List Block"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://skatox.com/blog/jquery-categories-list-widget/"
+msgstr ""
+
+#. Description of the plugin
+msgid "A widget for displaying a category list with some effects."
+msgstr ""
+
+#. Author of the plugin
+msgid "Miguel Angel Useche Castro"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://migueluseche.com/"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-html-builder.php:213
+msgid "View Sub-Categories"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:37
+msgid "A widget for displaying a categories list with some effects."
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:112
+msgid "There are no categories to display"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:162
+msgid "Categories"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:222
+#: build/index.js:764
+#: src/edit.js:42
+#: build/index.js:656
+msgid "Title"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:227
+#: build/index.js:770
+#: src/edit.js:49
+#: build/index.js:663
+msgid "Trigger Symbol"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:233
+#: build/index.js:777
+#: src/edit.js:57
+#: build/index.js:671
+msgid "Empty Space"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:249
+#: build/index.js:789
+#: src/edit.js:65
+#: build/index.js:679
+msgid "Symbol position"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:255
+#: build/index.js:799
+#: src/edit.js:77
+#: build/index.js:691
+msgid "Right"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:259
+#: build/index.js:796
+#: src/edit.js:73
+#: build/index.js:687
+msgid "Left"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:263
+#: build/index.js:802
+#: src/edit.js:82
+#: build/index.js:696
+msgid "Effect"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:269
+#: classes/legacy/class-jcl-legacy-widget.php:308
+#: build/index.js:809
+#: build/index.js:857
+#: src/edit.js:90
+#: src/edit.js:159
+#: build/index.js:704
+#: build/index.js:773
+msgid "None"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:273
+msgid "Slide (Accordion)"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:277
+#: build/index.js:815
+#: src/edit.js:101
+#: build/index.js:715
+msgid "Fade"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:281
+msgid "Order By"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:286
+#: build/index.js:825
+#: src/edit.js:114
+#: build/index.js:728
+msgid "Name"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:288
+#: build/index.js:828
+#: src/edit.js:118
+#: build/index.js:732
+msgid "Category ID"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:290
+#: build/index.js:831
+#: src/edit.js:122
+#: build/index.js:736
+msgid "Entries count"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:292
+#: build/index.js:834
+#: src/edit.js:129
+#: build/index.js:743
+msgid "Slug"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:297
+#: build/index.js:844
+#: src/edit.js:142
+#: build/index.js:756
+msgid "ASC"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:299
+#: build/index.js:847
+#: src/edit.js:146
+#: build/index.js:760
+msgid "DESC"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:302
+#: build/index.js:850
+#: src/edit.js:151
+#: build/index.js:765
+msgid "Expand"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:312
+#: build/index.js:863
+#: src/edit.js:170
+#: build/index.js:784
+msgid "Selected category"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:316
+msgid "All"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:320
+#: build/index.js:866
+#: src/edit.js:181
+#: build/index.js:795
+msgid "Extra options"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:326
+#: build/index.js:869
+#: src/edit.js:186
+#: build/index.js:800
+msgid "Show number of posts"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:333
+#: build/index.js:875
+#: src/edit.js:198
+#: build/index.js:812
+msgid "Show empty categories"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:340
+msgid "Parent expand sub-categories"
+msgstr ""
+
+#: classes/legacy/class-jcl-legacy-widget.php:342
+msgid "Categories to exclude:"
+msgstr ""
+
+#: build/index.js:41
+#: src/components/admin/CategoryPicker.js:24
+#: build/index.js:24
+msgid "Loading categories…"
+msgstr ""
+
+#: build/index.js:126
+#: build/view.js:87
+#: src/components/frontend/JsCategoriesList.js:46
+#: build/index.js:92
+#: build/view.js:59
+msgid "Loading…"
+msgstr ""
+
+#: build/index.js:128
+#: build/view.js:89
+#: src/components/frontend/JsCategoriesList.js:55
+#: build/index.js:101
+#: build/view.js:68
+msgid "There are no categories to show."
+msgstr ""
+
+#: build/index.js:131
+#: build/view.js:92
+#: src/components/frontend/JsCategoriesList.js:74
+#: build/index.js:119
+#: build/view.js:86
+msgid "Cannot load categories."
+msgstr ""
+
+#: build/index.js:761
+#: src/edit.js:38
+#: build/index.js:652
+msgid "General options"
+msgstr ""
+
+#: build/index.js:812
+#: src/edit.js:94
+#: build/index.js:708
+msgid "Slide( Accordion )"
+msgstr ""
+
+#: build/index.js:818
+#: src/edit.js:106
+#: build/index.js:720
+msgid "Order by"
+msgstr ""
+
+#: build/index.js:837
+#: src/edit.js:134
+#: build/index.js:748
+msgid "Order direction"
+msgstr ""
+
+#: build/index.js:860
+#: src/edit.js:163
+#: build/index.js:777
+msgid "All (warning: requires too many ajax calls on load)"
+msgstr ""
+
+#: build/index.js:881
+#: src/edit.js:212
+#: build/index.js:826
+msgid "Category management"
+msgstr ""
+
+#: build/index.js:884
+#: src/edit.js:217
+#: build/index.js:831
+msgid "Include or exclude"
+msgstr ""
+
+#: build/index.js:887
+#: src/edit.js:224
+#: build/index.js:838
+msgid "Include the following categories"
+msgstr ""
+
+#: build/index.js:890
+#: src/edit.js:231
+#: build/index.js:845
+msgid "Exclude the following categories "
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block title"
+msgid "JS Category List"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block description"
+msgid "A widget for displaying a category list with some effects."
+msgstr ""
