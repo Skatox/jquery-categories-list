@@ -1,12 +1,12 @@
 === JS Categories List Widget ===
 Contributors: skatox
 Donate link: https://skatox.com/blog/jquery-categories-list-widget/
-Tags: jquery, ajax, javascript, collapse, collapsible, categories, collapsible categories, widget, category
-Requires at least: 5.8
-Tested up to: 6.2.2
-Stable tag: 4.0.0
+Tags: javascript, categories, gutenberg, block, widget
+Requires at least: 6.1
+Tested up to: 6.5
+Stable tag: 4.0.1
 
-A simple JS widget (can be called from posts) for displaying categories in a list with some effects.
+A simple Gutenberg block and JS widget (can be called from posts) for displaying categories in a list with some effects.
 
 == Description ==
 
@@ -118,6 +118,19 @@ Since 2.0 it's possible. Each instance has its own configuration. Shortcode widg
 2.  Here you can see a list of categories and its sub-categories expanded.
 
 == Change Log ==
+
+= 4.0.1 =
+* Added support for WordPress Playground.
+* Updating tests to the latest react-testing-library version.
+* Updating JS dependencies to latest version. This will fix security issues and improve performance.
+* Legacy version: added `jcl_widget_title` hook to allow changing the widget's title (helpful for translations).
+
+= 4.0.0 =
+* Code migrated to Gutenberg block. Now you can use this plugin as a Gutenberg block on any modern theme.
+* The block version reads the categories dynamically. It saves bandwidth and reduces old DOM size on old sites.
+* JS code is only loaded if there’s a widget or block is added to page. No more always loading JS and CSS code.
+* Deprecated old php version. It will only be on maintenance mode and new Gutenberg block will be supported.
+* Improved automated tests and code, to make future versions easier to develop.
 
 = 3.0 =
 * Solved accordion bug with Intenet Explorer 8

@@ -1,6 +1,6 @@
 // CategoryLink.test.js
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 import CategoryLink from '../../components/frontend/components/CategoryLink';
 import {
 	ConfigContext,

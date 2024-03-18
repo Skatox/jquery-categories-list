@@ -1,28 +1,29 @@
 {
-	"name": "jquery-categories-list",
-	"version": "4.0.0",
-	"description": "A widget for displaying a category list with some effects.",
-	"author": "Miguel Angel Useche Castro",
-	"homepage": "https://migueluseche.com",
-	"main": "build/index.js",
-	"scripts": {
-		"build": "wp-scripts build",
-		"format": "wp-scripts format",
-		"lint:css": "wp-scripts lint-style",
-		"lint:js": "wp-scripts lint-js",
+  "name": "jquery-categories-list",
+  "version": "4.0.1",
+  "description": "A block for displaying a category list with some effects.",
+  "author": "Miguel Angel Useche Castro",
+  "homepage": "https://migueluseche.com",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
     "lint:js:fix": "wp-scripts lint-js --fix",
-		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip",
-		"start": "wp-scripts start",
-		"test:unit": "wp-scripts test-unit-js"
-	},
-	"devDependencies": {
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^14.0.0",
-		"@wordpress/babel-preset-default": "^7.16.0",
-		"@wordpress/scripts": "^26.3.0"
-	},
-	"dependencies": {
-		"@wordpress/i18n": "^4.32.0"
-	}
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "start": "wp-scripts start",
+    "test:unit": "wp-scripts test-unit-js"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "@wordpress/babel-preset-default": "^7.37.0",
+    "@wordpress/scripts": "^27.4.0"
+  },
+  "dependencies": {
+    "@wordpress/element": "^5.30.0",
+    "@wordpress/i18n": "^4.53.0"
+  }
 }

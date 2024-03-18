@@ -2,8 +2,8 @@
 
 class JCL_Legacy_Widget extends WP_Widget {
 
-	const ASSETS_ID = 'js-categories-list';
-	const JS_FILENAME = 'jcl.js';
+	const ASSETS_ID    = 'js-categories-list';
+	const JS_FILENAME  = 'jcl.js';
 	const CSS_FILENAME = 'jcl.css';
 	/**
 	 * Class instance, used to control plugin's action from a third party plugin
@@ -11,8 +11,8 @@ class JCL_Legacy_Widget extends WP_Widget {
 	 * @var $instance
 	 */
 	public static $instance;
-	public $config;
-	public $defaults
+	public        $config;
+	public        $defaults
 		= [
 			'title'         => '',
 			'symbol'        => 1,
@@ -28,13 +28,13 @@ class JCL_Legacy_Widget extends WP_Widget {
 			'showcount'     => 0,
 			'expand'        => 'none',
 			'parent_expand' => 0,
-			'exclude'       => null
+			'exclude'       => null,
 		];
 
 	public function __construct() {
 		parent::__construct( 'jcl_widget', 'JS Categories List Widget (Legacy)', [
 			'classname'   => 'widget_category widget_jcl_widget',
-			'description' => __( 'A widget for displaying a categories list with some effects.', 'jcl_i18n' )
+			'description' => __( 'A widget for displaying a categories list with some effects.', 'jcl_i18n' ),
 		] );
 	}
 
@@ -72,7 +72,7 @@ class JCL_Legacy_Widget extends WP_Widget {
 	/**
 	 * Prints widgets code.
 	 *
-	 * @param array $args Widget arguments.
+	 * @param array $args     Widget arguments.
 	 * @param array $instance Current widget instance, there may be multiple widgets at the same time.
 	 */
 	public function widget( $args, $instance ) {
@@ -89,7 +89,10 @@ class JCL_Legacy_Widget extends WP_Widget {
 
 		echo $settings['before_widget'];
 		echo $settings['before_title'];
-		echo apply_filters( 'widget_title', $this->config['title'] );
+
+		$title = apply_filters( 'jcl_widget_title', $this->config['title'] );
+		echo apply_filters( 'widget_title', $title );
+
 		echo $settings['after_title'];
 		echo $this->build_html();
 		echo $settings['after_widget'];
@@ -138,11 +141,12 @@ class JCL_Legacy_Widget extends WP_Widget {
 
 	/**
 	 * Returns all categories
+	 *
 	 * @return array of categories.
 	 */
 	protected function get_categories() {
 		return get_categories(
-			array(
+			[
 				'type'         => 'post',
 				'child_of'     => 0,
 				'orderby'      => $this->config['orderby'],
@@ -151,7 +155,7 @@ class JCL_Legacy_Widget extends WP_Widget {
 				'hierarchical' => 1,
 				'taxonomy'     => 'category',
 				'pad_counts'   => true,
-			)
+			]
 		);
 	}
 
@@ -218,158 +222,158 @@ class JCL_Legacy_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 		?>
-        <dl>
-            <dt><strong><?php _e( 'Title', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <input name="<?php echo $this->get_field_name( 'title' ) ?>" type="text"
-                       value="<?php echo $instance['title']; ?>"/>
-            </dd>
-            <dt><strong><?php _e( 'Trigger Symbol', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'symbol' ) ?>"
-                        name="<?php echo $this->get_field_name( 'symbol' ) ?>">
-                    <option value="0" <?php if ( $instance['symbol'] == '0' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'Empty Space', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="1" <?php if ( $instance['symbol'] == '1' )
-						echo 'selected="selected"' ?> >
-                        ► ▼
-                    </option>
-                    <option value="2" <?php if ( $instance['symbol'] == '2' )
-						echo 'selected="selected"' ?> >
-                        (+) (-)
-                    </option>
-                    <option value="3" <?php if ( $instance['symbol'] == '3' )
-						echo 'selected="selected"' ?> >
-                        [+] [-]
-                    </option>
-                </select>
-            </dd>
-            <dt><strong><?php _e( 'Symbol position', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'layout' ) ?>"
-                        name="<?php echo $this->get_field_name( 'layout' ) ?>">
-                    <option value="right" <?php if ( $instance['layout'] == 'right' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'Right', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="left" <?php if ( $instance['layout'] != 'right' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'Left', 'jcl_i18n' ) ?>
-                    </option>
-                </select>
-            </dd>
-            <dt><strong><?php _e( 'Effect', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'effect' ) ?>"
-                        name="<?php echo $this->get_field_name( 'effect' ) ?>">
-                    <option value="none" <?php if ( $instance['effect'] == '' )
-						echo 'selected="selected"' ?>>
-						<?php _e( 'None', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="slide" <?php if ( $instance['effect'] == 'slide' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'Slide (Accordion)', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="fade" <?php if ( $instance['effect'] == 'fade' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'Fade', 'jcl_i18n' ) ?>
-                    </option>
-                </select>
-            </dd>
-            <dt><strong><?php _e( 'Order By', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'orderby' ) ?>"
-                        name="<?php echo $this->get_field_name( 'orderby' ) ?>">
-                    <option value="name" <?php if ( $instance['orderby'] == 'name' )
-						echo 'selected="selected"' ?> ><?php _e( 'Name', 'jcl_i18n' ) ?></option>
-                    <option value="id" <?php if ( $instance['orderby'] == 'id' )
-						echo 'selected="selected"' ?> ><?php _e( 'Category ID', 'jcl_i18n' ) ?></option>
-                    <option value="count" <?php if ( $instance['orderby'] == 'count' )
-						echo 'selected="selected"' ?> ><?php _e( 'Entries count', 'jcl_i18n' ) ?></option>
-                    <option value="slug" <?php if ( $instance['orderby'] == 'slug' )
-						echo 'selected="selected"' ?> ><?php _e( 'Slug', 'jcl_i18n' ) ?></option>
-                </select>
-                <select id="<?php echo $this->get_field_id( 'orderdir' ) ?>"
-                        name="<?php echo $this->get_field_name( 'orderdir' ) ?>">
-                    <option value="ASC" <?php if ( $instance['orderdir'] == 'ASC' )
-						echo 'selected="selected"' ?> ><?php _e( 'ASC', 'jcl_i18n' ) ?></option>
-                    <option value="DESC" <?php if ( $instance['orderdir'] == 'DESC' )
-						echo 'selected="selected"' ?> ><?php _e( 'DESC', 'jcl_i18n' ) ?></option>
-                </select>
-            </dd>
-            <dt><strong><?php _e( 'Expand', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'expand' ) ?>"
-                        name="<?php echo $this->get_field_name( 'expand' ) ?>">
-                    <option value="none" <?php if ( $instance['expand'] == '' )
-						echo 'selected="selected"' ?>>
-						<?php _e( 'None', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="sel_cat" <?php if ( $instance['expand'] == 'sel_cat' )
-						echo 'selected="selected"' ?>>
-						<?php _e( 'Selected category', 'jcl_i18n' ) ?>
-                    </option>
-                    <option value="all" <?php if ( $instance['expand'] == 'all' )
-						echo 'selected="selected"' ?> >
-						<?php _e( 'All', 'jcl_i18n' ) ?>
-                    </option>
-                </select>
-            </dd>
-            <dt><strong><?php _e( 'Extra options', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <input id="<?php echo $this->get_field_id( 'showcount' ) ?>" value="1"
-                       name="<?php echo $this->get_field_name( 'showcount' ) ?>"
-                       type="checkbox" <?php if ( $instance['showcount'] )
-					echo 'checked="checked"' ?> />
-				<?php _e( 'Show number of posts', 'jcl_i18n' ) ?>
-            </dd>
-            <dd>
-                <input id="<?php echo $this->get_field_id( 'show_empty' ) ?>" value="1"
-                       name="<?php echo $this->get_field_name( 'show_empty' ) ?>"
-                       type="checkbox" <?php if ( ! empty( $instance['show_empty'] ) )
-					echo 'checked="checked"' ?> />
-				<?php _e( 'Show empty categories', 'jcl_i18n' ) ?>
-            </dd>
-            <dd>
-                <input id="<?php echo $this->get_field_id( 'parent_expand' ) ?>" value="1"
-                       name="<?php echo $this->get_field_name( 'parent_expand' ) ?>"
-                       type="checkbox" <?php if ( ! empty( $instance['parent_expand'] ) )
-					echo 'checked="checked"' ?> />
-				<?php _e( 'Parent expand sub-categories', 'jcl_i18n' ) ?>
-            </dd>
-            <dt><strong><?php _e( 'Categories to exclude:', 'jcl_i18n' ) ?></strong></dt>
-            <dd>
-                <select id="<?php echo $this->get_field_id( 'exclude' ) ?>"
-                        name="<?php echo $this->get_field_name( 'exclude' ) ?>[]" style="height:75px;"
-                        multiple="multiple">
-					<?php
-					$cats                = get_categories(
-						array(
-							'type'         => 'post',
-							'child_of'     => 0,
-							'orderby'      => 'name',
-							'order'        => 'asc',
-							'hide_empty'   => 0,
-							'hierarchical' => 1,
-							'taxonomy'     => 'category',
-							'pad_counts'   => false
-						)
-					);
-					$instance['exclude'] = empty( $instance['exclude'] ) ? array() : unserialize( $instance['exclude'] );
-					if ( is_string( $instance['exclude'] ) ) {
-						$instance['exclude'] = unserialize( $instance['exclude'] );
-					}
+      <dl>
+        <dt><strong><?php _e( 'Title', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <input name="<?php echo $this->get_field_name( 'title' ) ?>" type="text"
+                 value="<?php echo $instance['title']; ?>"/>
+        </dd>
+        <dt><strong><?php _e( 'Trigger Symbol', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'symbol' ) ?>"
+                  name="<?php echo $this->get_field_name( 'symbol' ) ?>">
+            <option value="0" <?php if ( $instance['symbol'] == '0' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'Empty Space', 'jcl_i18n' ) ?>
+            </option>
+            <option value="1" <?php if ( $instance['symbol'] == '1' )
+				echo 'selected="selected"' ?> >
+              ► ▼
+            </option>
+            <option value="2" <?php if ( $instance['symbol'] == '2' )
+				echo 'selected="selected"' ?> >
+              (+) (-)
+            </option>
+            <option value="3" <?php if ( $instance['symbol'] == '3' )
+				echo 'selected="selected"' ?> >
+              [+] [-]
+            </option>
+          </select>
+        </dd>
+        <dt><strong><?php _e( 'Symbol position', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'layout' ) ?>"
+                  name="<?php echo $this->get_field_name( 'layout' ) ?>">
+            <option value="right" <?php if ( $instance['layout'] == 'right' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'Right', 'jcl_i18n' ) ?>
+            </option>
+            <option value="left" <?php if ( $instance['layout'] != 'right' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'Left', 'jcl_i18n' ) ?>
+            </option>
+          </select>
+        </dd>
+        <dt><strong><?php _e( 'Effect', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'effect' ) ?>"
+                  name="<?php echo $this->get_field_name( 'effect' ) ?>">
+            <option value="none" <?php if ( $instance['effect'] == '' )
+				echo 'selected="selected"' ?>>
+				<?php _e( 'None', 'jcl_i18n' ) ?>
+            </option>
+            <option value="slide" <?php if ( $instance['effect'] == 'slide' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'Slide (Accordion)', 'jcl_i18n' ) ?>
+            </option>
+            <option value="fade" <?php if ( $instance['effect'] == 'fade' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'Fade', 'jcl_i18n' ) ?>
+            </option>
+          </select>
+        </dd>
+        <dt><strong><?php _e( 'Order By', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'orderby' ) ?>"
+                  name="<?php echo $this->get_field_name( 'orderby' ) ?>">
+            <option value="name" <?php if ( $instance['orderby'] == 'name' )
+				echo 'selected="selected"' ?> ><?php _e( 'Name', 'jcl_i18n' ) ?></option>
+            <option value="id" <?php if ( $instance['orderby'] == 'id' )
+				echo 'selected="selected"' ?> ><?php _e( 'Category ID', 'jcl_i18n' ) ?></option>
+            <option value="count" <?php if ( $instance['orderby'] == 'count' )
+				echo 'selected="selected"' ?> ><?php _e( 'Entries count', 'jcl_i18n' ) ?></option>
+            <option value="slug" <?php if ( $instance['orderby'] == 'slug' )
+				echo 'selected="selected"' ?> ><?php _e( 'Slug', 'jcl_i18n' ) ?></option>
+          </select>
+          <select id="<?php echo $this->get_field_id( 'orderdir' ) ?>"
+                  name="<?php echo $this->get_field_name( 'orderdir' ) ?>">
+            <option value="ASC" <?php if ( $instance['orderdir'] == 'ASC' )
+				echo 'selected="selected"' ?> ><?php _e( 'ASC', 'jcl_i18n' ) ?></option>
+            <option value="DESC" <?php if ( $instance['orderdir'] == 'DESC' )
+				echo 'selected="selected"' ?> ><?php _e( 'DESC', 'jcl_i18n' ) ?></option>
+          </select>
+        </dd>
+        <dt><strong><?php _e( 'Expand', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'expand' ) ?>"
+                  name="<?php echo $this->get_field_name( 'expand' ) ?>">
+            <option value="none" <?php if ( $instance['expand'] == '' )
+				echo 'selected="selected"' ?>>
+				<?php _e( 'None', 'jcl_i18n' ) ?>
+            </option>
+            <option value="sel_cat" <?php if ( $instance['expand'] == 'sel_cat' )
+				echo 'selected="selected"' ?>>
+				<?php _e( 'Selected category', 'jcl_i18n' ) ?>
+            </option>
+            <option value="all" <?php if ( $instance['expand'] == 'all' )
+				echo 'selected="selected"' ?> >
+				<?php _e( 'All', 'jcl_i18n' ) ?>
+            </option>
+          </select>
+        </dd>
+        <dt><strong><?php _e( 'Extra options', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <input id="<?php echo $this->get_field_id( 'showcount' ) ?>" value="1"
+                 name="<?php echo $this->get_field_name( 'showcount' ) ?>"
+                 type="checkbox" <?php if ( $instance['showcount'] )
+			  echo 'checked="checked"' ?> />
+			<?php _e( 'Show number of posts', 'jcl_i18n' ) ?>
+        </dd>
+        <dd>
+          <input id="<?php echo $this->get_field_id( 'show_empty' ) ?>" value="1"
+                 name="<?php echo $this->get_field_name( 'show_empty' ) ?>"
+                 type="checkbox" <?php if ( ! empty( $instance['show_empty'] ) )
+			  echo 'checked="checked"' ?> />
+			<?php _e( 'Show empty categories', 'jcl_i18n' ) ?>
+        </dd>
+        <dd>
+          <input id="<?php echo $this->get_field_id( 'parent_expand' ) ?>" value="1"
+                 name="<?php echo $this->get_field_name( 'parent_expand' ) ?>"
+                 type="checkbox" <?php if ( ! empty( $instance['parent_expand'] ) )
+			  echo 'checked="checked"' ?> />
+			<?php _e( 'Parent expand sub-categories', 'jcl_i18n' ) ?>
+        </dd>
+        <dt><strong><?php _e( 'Categories to exclude:', 'jcl_i18n' ) ?></strong></dt>
+        <dd>
+          <select id="<?php echo $this->get_field_id( 'exclude' ) ?>"
+                  name="<?php echo $this->get_field_name( 'exclude' ) ?>[]" style="height:75px;"
+                  multiple="multiple">
+			  <?php
+			  $cats                = get_categories(
+				  [
+					  'type'         => 'post',
+					  'child_of'     => 0,
+					  'orderby'      => 'name',
+					  'order'        => 'asc',
+					  'hide_empty'   => 0,
+					  'hierarchical' => 1,
+					  'taxonomy'     => 'category',
+					  'pad_counts'   => false,
+				  ]
+			  );
+			  $instance['exclude'] = empty( $instance['exclude'] ) ? [] : unserialize( $instance['exclude'] );
+			  if ( is_string( $instance['exclude'] ) ) {
+				  $instance['exclude'] = unserialize( $instance['exclude'] );
+			  }
 
-					foreach ( $cats as $cat ) {
-						$checked = ( in_array( $cat->term_id, $instance['exclude'] ) ) ? 'selected="selected"' : '';
-						echo "<option value=\"{$cat->term_id}\" {$checked}>{$cat->cat_name}</option>";
-					}
-					?>
-                </select>
-            </dd>
-        </dl>
+			  foreach ( $cats as $cat ) {
+				  $checked = ( in_array( $cat->term_id, $instance['exclude'] ) ) ? 'selected="selected"' : '';
+				  echo "<option value=\"{$cat->term_id}\" {$checked}>{$cat->cat_name}</option>";
+			  }
+			  ?>
+          </select>
+        </dd>
+      </dl>
 		<?php
 	}
 
@@ -379,10 +383,11 @@ class JCL_Legacy_Widget extends WP_Widget {
 	public function filter( $attr ) {
 		$this->enqueue_scripts();
 		$instance = shortcode_atts( $this->defaults, $attr );
-    
-    if (!empty($instance['exclude']))
-      $instance['exclude'] = serialize( explode( ',', $instance['exclude'] ) );
-    
+
+		if ( ! empty( $instance['exclude'] ) ) {
+			$instance['exclude'] = serialize( explode( ',', $instance['exclude'] ) );
+		}
+
 		$this->config = $instance;
 
 		return $this->build_html();
