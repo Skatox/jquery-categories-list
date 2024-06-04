@@ -5,6 +5,8 @@ Tags: javascript, categories, gutenberg, block, widget
 Requires at least: 6.1
 Tested up to: 6.5
 Stable tag: 4.0.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 A simple Gutenberg block and JS widget (can be called from posts) for displaying categories in a list with some effects.
 
