@@ -3,8 +3,8 @@ Contributors: skatox
 Donate link: https://skatox.com/blog/jquery-categories-list-widget/
 Tags: javascript, categories, gutenberg, block, widget
 Requires at least: 6.1
-Tested up to: 6.5
-Stable tag: 4.0.1
+Tested up to: 6.8
+Stable tag: 4.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Since 2.0 it's possible. Each instance has its own configuration. Shortcode widg
 2.  Here you can see a list of categories and its sub-categories expanded.
 
 == Change Log ==
+
+= 4.0.2 =
+* Improve compatibility with WordPress standards
 
 = 4.0.1 =
 * Added support for WordPress Playground.

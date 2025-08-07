@@ -419,4 +419,4 @@ function jcl_register_widget() {
 }
 
 add_action( 'widgets_init', 'jcl_register_widget' );
-add_action( 'plugins_loaded', [ 'JCL_Legacy_Widget', 'init' ] );
+add_action( 'init', [ 'JCL_Legacy_Widget', 'init' ] );
