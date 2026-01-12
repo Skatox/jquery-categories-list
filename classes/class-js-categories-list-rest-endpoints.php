@@ -4,6 +4,7 @@
  * Class to register REST API endpoints for the block.
  */
 class JS_Categories_List_Rest_Endpoints {
+	const MAX_IDS = 200;
 
 	public $config = [];
 
@@ -25,7 +26,14 @@ class JS_Categories_List_Rest_Endpoints {
 	 */
 	private function build_config( $request ) {
 		$include_or_exclude = $request->get_param( 'exclusionType' ) ?? 'include';
+		if ( ! in_array( $include_or_exclude, [ 'include', 'exclude' ], true ) ) {
+			$include_or_exclude = 'include';
+		}
 		$categories         = $request->get_param( 'cats' ) ?? '';
+		$categories         = wp_parse_id_list( $categories );
+		if ( count( $categories ) > self::MAX_IDS ) {
+			$categories = array_slice( $categories, 0, self::MAX_IDS );
+		}
 
 		if ( $include_or_exclude === 'include' ) {
 			$included = $categories;
@@ -41,13 +49,25 @@ class JS_Categories_List_Rest_Endpoints {
 			$show_empty = $show_empty === 'true';
 		}
 
+		$orderby = $request->get_param( 'orderby' ) ?? 'name';
+		$orderby = sanitize_key( $orderby );
+		$allowed_orderby = [ 'name', 'id', 'count', 'slug' ];
+		if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+			$orderby = 'name';
+		}
+
+		$orderdir = strtoupper( (string) ( $request->get_param( 'orderdir' ) ?? 'ASC' ) );
+		if ( ! in_array( $orderdir, [ 'ASC', 'DESC' ], true ) ) {
+			$orderdir = 'ASC';
+		}
+
 		return [
 			'exclude'    => $excluded,
 			'include'    => $included,
-			'orderby'    => $request->get_param( 'orderby' ) ?? 'name',
-			'orderdir'   => $request->get_param( 'orderdir' ) ?? 'ASC',
-			'parent'     => $request->get_param( 'parent' ) ?? 0,
-			'show_empty' => $show_empty,
+			'orderby'    => $orderby,
+			'orderdir'   => $orderdir,
+			'parent'     => absint( $request->get_param( 'parent' ) ?? 0 ),
+			'show_empty' => (bool) $show_empty,
 			'taxonomy'   => $request->get_param( 'taxonomy' ) ?? 'category',
 			'type'       => $request->get_param( 'type' ) ?? 'post',
 		];
@@ -73,7 +93,7 @@ class JS_Categories_List_Rest_Endpoints {
 				'pad_counts'   => true,
 				'include'      => $config['include'],
 				'exclude'      => $config['exclude'],
-				'parent'       => $config['parent']
+				'parent'       => $config['parent'],
 			]
 		);
 
@@ -85,7 +105,7 @@ class JS_Categories_List_Rest_Endpoints {
 				'name'      => $category->cat_name,
 				'count'     => $category->count,
 				'url'       => esc_url( get_category_link( $category->term_id ) ),
-				'child_num' => count( get_term_children( $category->term_id, 'category' ) )
+				'child_num' => count( get_term_children( $category->term_id, 'category' ) ),
 			];
 		}
 

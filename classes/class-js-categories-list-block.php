@@ -101,9 +101,12 @@ class JS_Categories_List_Block {
 				$parent_category_ids      = array_merge( $parent_category_ids, $grandparent_category_ids );
 			}
 
+			$category_and_parents = array_map( 'absint', array_unique( $category_and_parents ) );
+			$category_csv         = implode( ',', $category_and_parents );
+
 			printf(
-				'<script type="text/javascript">var jclCurrentCat="%s";</script>',
-				implode( ',', array_unique( $category_and_parents ) )
+				'<script type="text/javascript">var jclCurrentCat=%s;</script>',
+				wp_json_encode( $category_csv )
 			);
 		}
 	}

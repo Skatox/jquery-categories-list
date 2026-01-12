@@ -37,14 +37,24 @@ class JCL_Legacy_HTML_Builder {
 		$cats_to_exclude = [];
 
 		if ( ! empty( $this->config['exclude'] ) ) {
-			$cats_to_exclude = unserialize( $this->config['exclude'] );
-
-			if ( is_string( $cats_to_exclude ) ) {
-				$cats_to_exclude = unserialize( $cats_to_exclude );
-			}
+			$cats_to_exclude = $this->maybe_unserialize_exclude( $this->config['exclude'] );
 		}
 
-		$this->cats_to_exclude = $cats_to_exclude;
+		$this->cats_to_exclude = wp_parse_id_list( $cats_to_exclude );
+	}
+
+	private function maybe_unserialize_exclude( $value ) {
+		$parsed = $value;
+
+		if ( is_string( $parsed ) && is_serialized( $parsed ) ) {
+			$parsed = unserialize( $parsed, [ 'allowed_classes' => false ] );
+		}
+
+		if ( is_string( $parsed ) && is_serialized( $parsed ) ) {
+			$parsed = unserialize( $parsed, [ 'allowed_classes' => false ] );
+		}
+
+		return $parsed;
 	}
 
 	/**
@@ -107,8 +117,8 @@ class JCL_Legacy_HTML_Builder {
 			}
 
 			if (
-				$this->current_post && is_array( $cat->cat_ID ) &&
-				in_array( $cat->cat_ID, $this->current_post->post_category )
+				$this->current_post &&
+				in_array( (int) $cat->cat_ID, (array) $this->current_post->post_category, true )
 			) {
 				return true;
 			}
@@ -143,7 +153,7 @@ class JCL_Legacy_HTML_Builder {
 		$categories = $this->filter_cats_by_parent_id( $parent_id );
 
 		foreach ( $categories as $category ) {
-			if ( empty( $category->cat_name ) || in_array( $category->term_id, $this->cats_to_exclude ) ) {
+			if ( empty( $category->cat_name ) || in_array( (int) $category->term_id, $this->cats_to_exclude, true ) ) {
 				continue;
 			}
 
@@ -182,13 +192,13 @@ class JCL_Legacy_HTML_Builder {
 	 */
 	protected function create_category_link( $category, $is_active ) {
 
-		$classCode = $is_active ? 'class="' . self::ACTIVE_CLASS . '"' : '';
+		$classCode = $is_active ? 'class="' . esc_attr( self::ACTIVE_CLASS ) . '"' : '';
 		$link      = get_category_link( $category->term_id );
 
-		$html = '<a href="' . $link . '" ' . $classCode . '>' . $category->cat_name;
+		$html = '<a href="' . esc_url( $link ) . '" ' . $classCode . '>' . esc_html( $category->cat_name );
 
 		if ( $this->config['showcount'] ) {
-			$html .= '<span class="jcl_count">(' . $category->count . ')</span>';
+			$html .= '<span class="jcl_count">(' . (int) $category->count . ')</span>';
 		}
 
 		$html .= '</a>';
@@ -209,9 +219,9 @@ class JCL_Legacy_HTML_Builder {
 
 		return sprintf(
 			'<a href="%s" class="jcl_symbol" title="%s">%s</a>',
-			esc_attr( get_category_link( $category->term_id ) ),
+			esc_url( get_category_link( $category->term_id ) ),
 			esc_attr( __( 'View Sub-Categories', 'jcl_i18n' ) ),
-			htmlspecialchars( $this->config[ $symbol_key ] )
+			esc_html( $this->config[ $symbol_key ] )
 		);
 	}
 }

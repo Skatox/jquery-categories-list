@@ -3,8 +3,8 @@ Contributors: skatox
 Donate link: https://skatox.com/blog/jquery-categories-list-widget/
 Tags: javascript, categories, gutenberg, block, widget
 Requires at least: 6.1
-Tested up to: 6.8
-Stable tag: 4.0.2
+Tested up to: 7.0
+Stable tag: 4.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,17 @@ Since 2.0 it's possible. Each instance has its own configuration. Shortcode widg
 2.  Here you can see a list of categories and its sub-categories expanded.
 
 == Change Log ==
+
+= 4.0.3 = 
+* Escaped category names/links/counts in the legacy frontend output, fixed
+  active child detection, and made exclude parsing safe with unserialize(...,
+  ['allowed_classes' => false]) + wp_parse_id_list in classes/legacy/class-
+    jcl-legacy-html-builder.php.
+* Added spaces between data-* attributes, escaped admin form values/IDs/names,
+    sanitized stored exclude lists, and safely deserialized excludes in classes/
+    legacy/class-jcl-legacy-widget.php.
+* Validated REST params (orderby, orderdir, parent, cats) and normalized them
+    to safe values in classes/class-js-categories-list-rest-endpoints.php.
 
 = 4.0.2 =
 * Improve compatibility with WordPress standards
