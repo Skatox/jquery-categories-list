@@ -2,7 +2,7 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: JS Categories List Block 4.0.0\n"
+"Project-Id-Version: JS Categories List Block 4.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jquery-categories-list\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2023-06-02T19:20:46-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
-"X-Domain: jcl_i18n\n"
+"X-Domain: jquery-categories-list\n"
 
 #. Plugin Name of the plugin
 msgid "JS Categories List Block"

@@ -21,11 +21,11 @@ const CategoryPicker = ( { selectedCats, onSelected } ) => {
 	} );
 
 	if ( isLoading ) {
-		return <h3>{ __( 'Loading categories…', 'jcl_i18n' ) }</h3>;
+		return <h3>{ __( 'Loading categories…', 'jquery-categories-list' ) }</h3>;
 	}
 
 	if ( categories === null ) {
-		return <p>No categories found</p>;
+		return <p>{ __( 'No categories found.', 'jquery-categories-list' ) }</p>;
 	}
 
 	return (

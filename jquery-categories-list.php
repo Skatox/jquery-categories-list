@@ -3,12 +3,12 @@
  * Plugin Name:       JS Categories List Block
  * Plugin URI:        https://skatox.com/blog/jquery-categories-list-widget/
  * Description:       A widget for displaying a category list with some effects.
- * Version:           4.0.3
+ * Version:           4.1.0
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Author:            Miguel Angel Useche Castro
  * Author URI:        https://migueluseche.com/
- * Text Domain:       jcl_i18n
+ * Text Domain:       jquery-categories-list
  * Domain Path:       /languages
  * License: GPL2
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,42 +29,59 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'JCL_ROOT_PATH' ) ) {
 	define( 'JCL_ROOT_PATH', plugin_dir_path( __FILE__ ) );
 }
+
 if ( ! defined( 'JCL_BASE_URL' ) ) {
 	define( 'JCL_BASE_URL', plugin_dir_url( __FILE__ ) );
 }
+
 if ( ! defined( 'JCL_VERSION' ) ) {
-	define( 'JCL_VERSION', '4.0.3' );
+	define( 'JCL_VERSION', '4.1.0' );
 }
 
-require_once( 'classes/legacy/class-jcl-legacy-html-builder.php' );
-require_once( 'classes/legacy/class-jcl-legacy-widget.php' );
-require_once( 'classes/class-js-categories-list-rest-endpoints.php' );
-require_once( 'classes/class-js-categories-list-block.php' );
+if ( ! defined( 'JCL_TEXT_DOMAIN' ) ) {
+	define( 'JCL_TEXT_DOMAIN', 'jquery-categories-list' );
+}
+
+require_once JCL_ROOT_PATH . 'classes/legacy/class-jcl-legacy-html-builder.php';
+require_once JCL_ROOT_PATH . 'classes/legacy/class-jcl-legacy-widget.php';
+require_once JCL_ROOT_PATH . 'classes/class-js-categories-list-rest-endpoints.php';
+require_once JCL_ROOT_PATH . 'classes/class-js-categories-list-block.php';
 
 /**
- * Registers the block using the metadata loaded from the `block.json` file.
- * Behind the scenes, it registers also all assets so they can be enqueued
- * through the block editor in the corresponding context.
+ * Loads the plugin translations.
  *
- * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ * @return void
+ */
+function jcl_load_textdomain() {
+	load_plugin_textdomain( JCL_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+
+/**
+ * Registers the block and its translated script strings.
+ *
+ * @return void
  */
 function jcl_create_widget_block() {
 	register_block_type(
 		__DIR__ . '/build',
 		[
-			'render_callback' => [ JS_Categories_List_Block::instance(), 'build_html' ]
+			'render_callback' => [ JS_Categories_List_Block::instance(), 'build_html' ],
 		]
 	);
 
-	wp_set_script_translations(
-		'jcl_i18n-script', 'jcl_i18n',
-		plugin_dir_path( __FILE__ ) . 'languages'
-	);
+	if ( function_exists( 'generate_block_asset_handle' ) ) {
+		wp_set_script_translations(
+			generate_block_asset_handle( 'jquery-categories-list/categories-block', 'editorScript' ),
+			JCL_TEXT_DOMAIN,
+			JCL_ROOT_PATH . 'languages'
+		);
+	}
 }
 
+add_action( 'init', 'jcl_load_textdomain' );
 add_action( 'init', 'jcl_create_widget_block' );

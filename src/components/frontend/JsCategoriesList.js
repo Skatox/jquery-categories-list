@@ -43,7 +43,7 @@ const JsCategoriesList = () => {
 			{ loading ? (
 				<div>
 					<Loading loading={ loading } />
-					{ __( 'Loading…', 'jcl_i18n' ) }
+					{ __( 'Loading…', 'jquery-categories-list' ) }
 				</div>
 			) : (
 				''
@@ -54,7 +54,7 @@ const JsCategoriesList = () => {
 						<li>
 							{ __(
 								'There are no categories to show.',
-								'jcl_i18n'
+								'jquery-categories-list'
 							) }
 						</li>
 					) : (
@@ -71,7 +71,7 @@ const JsCategoriesList = () => {
 				''
 			) }
 			{ ( loaded || error ) && ! apiData
-				? __( 'Cannot load categories.', 'jcl_i18n' )
+				? __( 'Cannot load categories.', 'jquery-categories-list' )
 				: '' }
 		</div>
 	);

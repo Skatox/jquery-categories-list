@@ -1,84 +1,78 @@
 <?php
+/**
+ * REST API functionality.
+ *
+ * @package JQueryCategoriesList
+ */
 
 /**
- * Class to register REST API endpoints for the block.
+ * Registers REST API endpoints used by the block frontend.
  */
 class JS_Categories_List_Rest_Endpoints {
+	/**
+	 * Maximum number of category IDs accepted in a request.
+	 */
 	const MAX_IDS = 200;
 
-	public $config = [];
-
+	/**
+	 * Registers the plugin REST routes.
+	 *
+	 * @return void
+	 */
 	public function register_routes() {
-		$version   = '1';
-		$namespace = 'jcl/v' . $version;
-
-		register_rest_route( $namespace, '/categories', [
-			'methods'             => WP_REST_Server::READABLE,
-			'callback'            => [ $this, 'get_categories' ],
-			'permission_callback' => '__return_true',
-		] );
+		register_rest_route(
+			'jcl/v1',
+			'/categories',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_categories' ],
+				'permission_callback' => '__return_true',
+			]
+		);
 	}
 
 	/**
-	 * Creates internal config from received parameters.
+	 * Creates the internal configuration from request parameters.
 	 *
-	 * @param WP_REST_Request $request
+	 * @param WP_REST_Request $request Request object.
+	 * @return array<string, mixed>
 	 */
 	private function build_config( $request ) {
-		$include_or_exclude = $request->get_param( 'exclusionType' ) ?? 'include';
-		if ( ! in_array( $include_or_exclude, [ 'include', 'exclude' ], true ) ) {
-			$include_or_exclude = 'include';
-		}
-		$categories         = $request->get_param( 'cats' ) ?? '';
-		$categories         = wp_parse_id_list( $categories );
+		$include_or_exclude = $request->get_param( 'exclusionType' ) ?: 'include';
+		$include_or_exclude = in_array( $include_or_exclude, [ 'include', 'exclude' ], true ) ? $include_or_exclude : 'include';
+
+		$categories = wp_parse_id_list( $request->get_param( 'cats' ) ?: '' );
 		if ( count( $categories ) > self::MAX_IDS ) {
 			$categories = array_slice( $categories, 0, self::MAX_IDS );
 		}
 
-		if ( $include_or_exclude === 'include' ) {
-			$included = $categories;
-			$excluded = [];
-		} else {
-			$included = [];
-			$excluded = $categories;
-		}
+		$show_empty = rest_sanitize_boolean( $request->get_param( 'showEmpty' ) );
+		$orderby    = sanitize_key( $request->get_param( 'orderby' ) ?: 'name' );
+		$orderdir   = strtoupper( (string) ( $request->get_param( 'orderdir' ) ?: 'ASC' ) );
 
-		$show_empty = $request->get_param( 'showEmpty' ) ?? true;
-
-		if ( is_string( $show_empty ) ) {
-			$show_empty = $show_empty === 'true';
-		}
-
-		$orderby = $request->get_param( 'orderby' ) ?? 'name';
-		$orderby = sanitize_key( $orderby );
-		$allowed_orderby = [ 'name', 'id', 'count', 'slug' ];
-		if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+		if ( ! in_array( $orderby, [ 'name', 'id', 'count', 'slug' ], true ) ) {
 			$orderby = 'name';
 		}
 
-		$orderdir = strtoupper( (string) ( $request->get_param( 'orderdir' ) ?? 'ASC' ) );
 		if ( ! in_array( $orderdir, [ 'ASC', 'DESC' ], true ) ) {
 			$orderdir = 'ASC';
 		}
 
 		return [
-			'exclude'    => $excluded,
-			'include'    => $included,
+			'exclude'    => 'exclude' === $include_or_exclude ? $categories : [],
+			'include'    => 'include' === $include_or_exclude ? $categories : [],
 			'orderby'    => $orderby,
 			'orderdir'   => $orderdir,
-			'parent'     => absint( $request->get_param( 'parent' ) ?? 0 ),
+			'parent'     => absint( $request->get_param( 'parent' ) ?: 0 ),
 			'show_empty' => (bool) $show_empty,
-			'taxonomy'   => $request->get_param( 'taxonomy' ) ?? 'category',
-			'type'       => $request->get_param( 'type' ) ?? 'post',
 		];
 	}
 
 	/**
-	 * Get categories of posts.
+	 * Gets the requested categories.
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 *
-	 * @return WP_Error|WP_REST_Response Request with the data.
+	 * @param WP_REST_Request $request Full request data.
+	 * @return WP_REST_Response
 	 */
 	public function get_categories( $request ) {
 		$config          = $this->build_config( $request );
@@ -99,21 +93,23 @@ class JS_Categories_List_Rest_Endpoints {
 
 		$categories = [];
 
-		foreach ( $full_categories as $key => $category ) {
+		foreach ( $full_categories as $category ) {
 			$categories[] = [
-				'id'        => $category->term_id,
+				'id'        => (int) $category->term_id,
 				'name'      => $category->cat_name,
-				'count'     => $category->count,
+				'count'     => (int) $category->count,
 				'url'       => esc_url( get_category_link( $category->term_id ) ),
 				'child_num' => count( get_term_children( $category->term_id, 'category' ) ),
 			];
 		}
 
-		return new WP_REST_Response( [
-			'categories' => $categories,
-		], 200 );
+		return new WP_REST_Response(
+			[
+				'categories' => $categories,
+			],
+			200
+		);
 	}
 }
 
-$jcl_endpoints = new JS_Categories_List_Rest_Endpoints();
-add_action( 'rest_api_init', [ $jcl_endpoints, 'register_routes' ] );
+add_action( 'rest_api_init', [ new JS_Categories_List_Rest_Endpoints(), 'register_routes' ] );
