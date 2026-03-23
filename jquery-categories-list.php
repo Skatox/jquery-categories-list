@@ -3,7 +3,7 @@
  * Plugin Name:       JS Categories List Block
  * Plugin URI:        https://skatox.com/blog/jquery-categories-list-widget/
  * Description:       A widget for displaying a category list with some effects.
- * Version:           4.1.1
+ * Version:           4.1.0
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Author:            Miguel Angel Useche Castro
@@ -40,7 +40,7 @@ if ( ! defined( 'JCL_BASE_URL' ) ) {
 }
 
 if ( ! defined( 'JCL_VERSION' ) ) {
-	define( 'JCL_VERSION', '4.1.1' );
+	define( 'JCL_VERSION', '4.1.0' );
 }
 
 if ( ! defined( 'JCL_TEXT_DOMAIN' ) ) {

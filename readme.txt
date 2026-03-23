@@ -4,7 +4,7 @@ Donate link: https://skatox.com/blog/jquery-categories-list-widget/
 Tags: javascript, categories, gutenberg, block, widget
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 4.1.1
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,14 +121,11 @@ Since 2.0 it's possible. Each instance has its own configuration. Shortcode widg
 
 == Change Log ==
 
-= 4.1.1 = 
-* Hardened shortcode category parsing so user-provided `exclude` values are treated strictly as ID lists and are never unserialized.
-* Kept legacy widget option migration support for stored serialized exclude values while avoiding deserialization on shortcode input.
-
 = 4.1.0 = 
 * Standardized the plugin text domain to `jquery-categories-list` across PHP, block metadata, JavaScript, and bundled translation files for better WordPress.org compatibility.
 * Improved legacy widget, block, and REST code to better follow WordPress coding standards, sanitization, escaping, and inline documentation practices.
 * Added the remaining editor translation string and wired block script translations through the generated editor asset handle.
+* Hardened shortcode category parsing so user-provided `exclude` values are treated strictly as ID lists and are never unserialized, while keeping backward compatibility for stored serialized widget values.
 
 = 4.0.3 = 
 * Escaped category names/links/counts in the legacy frontend output, fixed
