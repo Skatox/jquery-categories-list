@@ -342,7 +342,7 @@ class JCL_Legacy_Widget extends WP_Widget {
 	public function filter( $attr ) {
 		$this->enqueue_scripts();
 		$this->config = shortcode_atts( $this->defaults, $attr );
-		$this->config['exclude'] = $this->normalize_excluded_categories( $this->config['exclude'] );
+		$this->config['exclude'] = $this->normalize_shortcode_category_ids( $this->config['exclude'] );
 
 		return $this->build_html();
 	}
@@ -411,6 +411,20 @@ class JCL_Legacy_Widget extends WP_Widget {
 		}
 
 		return [];
+	}
+
+
+	/**
+	 * Normalizes shortcode category IDs without attempting deserialization.
+	 *
+	 * Shortcode attributes are user-controlled input, so they should only accept
+	 * plain comma-separated IDs and never serialized payloads.
+	 *
+	 * @param mixed $category_ids Shortcode category IDs.
+	 * @return array<int, int>
+	 */
+	private function normalize_shortcode_category_ids( $category_ids ) {
+		return wp_parse_id_list( $category_ids );
 	}
 
 	/**
