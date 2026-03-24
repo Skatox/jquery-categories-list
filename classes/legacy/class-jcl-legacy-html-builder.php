@@ -78,7 +78,7 @@ class JCL_Legacy_HTML_Builder {
 			$post_cats = empty( $this->current_post ) ? null : $this->current_post->post_category;
 
 			// If current post's cats matches show.
-			$is_current_cat = is_array( $post_cats ) ? in_array( $category_id, $post_cats ) : $category_id == $post_cats;
+			$is_current_cat = is_array( $post_cats ) ? in_array( (int) $category_id, array_map( 'intval', $post_cats ), true ) : (int) $category_id === (int) $post_cats;
 
 			if ( $is_current_cat ) {
 				return true;
@@ -141,7 +141,7 @@ class JCL_Legacy_HTML_Builder {
 
 	protected function filter_cats_by_parent_id( $parent_id ) {
 		return array_filter( $this->all_categories, function ( $cat ) use ( $parent_id ) {
-			return $cat->parent == $parent_id;
+			return (int) $cat->parent === (int) $parent_id;
 		} );
 	}
 
@@ -220,7 +220,7 @@ class JCL_Legacy_HTML_Builder {
 		return sprintf(
 			'<a href="%s" class="jcl_symbol" title="%s">%s</a>',
 			esc_url( get_category_link( $category->term_id ) ),
-			esc_attr( __( 'View Sub-Categories', 'jcl_i18n' ) ),
+			esc_attr__( 'View Sub-Categories', JCL_TEXT_DOMAIN ),
 			esc_html( $this->config[ $symbol_key ] )
 		);
 	}

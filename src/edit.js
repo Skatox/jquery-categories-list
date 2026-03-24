@@ -35,18 +35,18 @@ export default function Edit( { attributes, setAttributes } ) {
 				<div className="jcl-controls">
 					<Panel>
 						<PanelBody
-							title={ __( 'General options', 'jcl_i18n' ) }
+							title={ __( 'General options', 'jquery-categories-list' ) }
 							initialOpen={ true }
 						>
 							<TextControl
-								label={ __( 'Title', 'jcl_i18n' ) }
+								label={ __( 'Title', 'jquery-categories-list' ) }
 								value={ attributes.title }
 								onChange={ ( val ) =>
 									setAttributes( { title: val } )
 								}
 							/>
 							<SelectControl
-								label={ __( 'Trigger Symbol', 'jcl_i18n' ) }
+								label={ __( 'Trigger Symbol', 'jquery-categories-list' ) }
 								value={ attributes.symbol }
 								onChange={ ( val ) =>
 									setAttributes( { symbol: val } )
@@ -54,7 +54,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: '0',
-										label: __( 'Empty Space', 'jcl_i18n' ),
+										label: __( 'Empty Space', 'jquery-categories-list' ),
 									},
 									{ value: '1', label: '► ▼' },
 									{ value: '2', label: '(+) (–)' },
@@ -62,7 +62,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								] }
 							/>
 							<SelectControl
-								label={ __( 'Symbol position', 'jcl_i18n' ) }
+								label={ __( 'Symbol position', 'jquery-categories-list' ) }
 								value={ attributes.layout }
 								onChange={ ( val ) =>
 									setAttributes( { layout: val } )
@@ -70,16 +70,16 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: 'left',
-										label: __( 'Left', 'jcl_i18n' ),
+										label: __( 'Left', 'jquery-categories-list' ),
 									},
 									{
 										value: 'right',
-										label: __( 'Right', 'jcl_i18n' ),
+										label: __( 'Right', 'jquery-categories-list' ),
 									},
 								] }
 							/>
 							<SelectControl
-								label={ __( 'Effect', 'jcl_i18n' ) }
+								label={ __( 'Effect', 'jquery-categories-list' ) }
 								value={ attributes.effect }
 								onChange={ ( val ) =>
 									setAttributes( { effect: val } )
@@ -87,23 +87,23 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: 'none',
-										label: __( 'None', 'jcl_i18n' ),
+										label: __( 'None', 'jquery-categories-list' ),
 									},
 									{
 										value: 'slide',
 										label: __(
-											'Slide( Accordion )',
-											'jcl_i18n'
+											'Slide (Accordion)',
+											'jquery-categories-list'
 										),
 									},
 									{
 										value: 'fade',
-										label: __( 'Fade', 'jcl_i18n' ),
+										label: __( 'Fade', 'jquery-categories-list' ),
 									},
 								] }
 							/>
 							<SelectControl
-								label={ __( 'Order by', 'jcl_i18n' ) }
+								label={ __( 'Order by', 'jquery-categories-list' ) }
 								value={ attributes.orderby }
 								onChange={ ( val ) =>
 									setAttributes( { orderby: val } )
@@ -111,27 +111,27 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: 'name',
-										label: __( 'Name', 'jcl_i18n' ),
+										label: __( 'Name', 'jquery-categories-list' ),
 									},
 									{
 										value: 'id',
-										label: __( 'Category ID', 'jcl_i18n' ),
+										label: __( 'Category ID', 'jquery-categories-list' ),
 									},
 									{
 										value: 'count',
 										label: __(
 											'Entries count',
-											'jcl_i18n'
+											'jquery-categories-list'
 										),
 									},
 									{
 										value: 'slug',
-										label: __( 'Slug', 'jcl_i18n' ),
+										label: __( 'Slug', 'jquery-categories-list' ),
 									},
 								] }
 							/>
 							<SelectControl
-								label={ __( 'Order direction', 'jcl_i18n' ) }
+								label={ __( 'Order direction', 'jquery-categories-list' ) }
 								value={ attributes.orderdir }
 								onChange={ ( val ) =>
 									setAttributes( { orderdir: val } )
@@ -139,16 +139,16 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: 'ASC',
-										label: __( 'ASC', 'jcl_i18n' ),
+										label: __( 'ASC', 'jquery-categories-list' ),
 									},
 									{
 										value: 'DESC',
-										label: __( 'DESC', 'jcl_i18n' ),
+										label: __( 'DESC', 'jquery-categories-list' ),
 									},
 								] }
 							/>
 							<SelectControl
-								label={ __( 'Expand', 'jcl_i18n' ) }
+								label={ __( 'Expand', 'jquery-categories-list' ) }
 								value={ attributes.expand }
 								onChange={ ( val ) =>
 									setAttributes( { expand: val } )
@@ -156,20 +156,20 @@ export default function Edit( { attributes, setAttributes } ) {
 								options={ [
 									{
 										value: '',
-										label: __( 'None', 'jcl_i18n' ),
+										label: __( 'None', 'jquery-categories-list' ),
 									},
 									{
 										value: 'all',
 										label: __(
 											'All (warning: requires too many ajax calls on load)',
-											'jcl_i18n'
+											'jquery-categories-list'
 										),
 									},
 									{
 										value: 'sel_cat',
 										label: __(
 											'Selected category',
-											'jcl_i18n'
+											'jquery-categories-list'
 										),
 									},
 								] }
@@ -178,14 +178,14 @@ export default function Edit( { attributes, setAttributes } ) {
 					</Panel>
 					<Panel>
 						<PanelBody
-							title={ __( 'Extra options', 'jcl_i18n' ) }
+							title={ __( 'Extra options', 'jquery-categories-list' ) }
 							initialOpen={ false }
 						>
 							<PanelRow>
 								<CheckboxControl
 									label={ __(
 										'Show number of posts',
-										'jcl_i18n'
+										'jquery-categories-list'
 									) }
 									checked={ attributes.showcount }
 									onChange={ ( val ) =>
@@ -197,7 +197,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								<CheckboxControl
 									label={ __(
 										'Show empty categories',
-										'jcl_i18n'
+										'jquery-categories-list'
 									) }
 									checked={ attributes.show_empty }
 									onChange={ ( val ) =>
@@ -209,28 +209,28 @@ export default function Edit( { attributes, setAttributes } ) {
 					</Panel>
 					<Panel>
 						<PanelBody
-							title={ __( 'Category management', 'jcl_i18n' ) }
+							title={ __( 'Category management', 'jquery-categories-list' ) }
 							initialOpen={ false }
 						>
 							<PanelRow>
 								<RadioControl
 									label={ __(
 										'Include or exclude',
-										'jcl_i18n'
+										'jquery-categories-list'
 									) }
 									selected={ attributes.include_or_exclude }
 									options={ [
 										{
 											label: __(
 												'Include the following categories',
-												'jcl_i18n'
+												'jquery-categories-list'
 											),
 											value: 'include',
 										},
 										{
 											label: __(
-												'Exclude the following categories ',
-												'jcl_i18n'
+												'Exclude the following categories',
+												'jquery-categories-list'
 											),
 											value: 'exclude',
 										},
