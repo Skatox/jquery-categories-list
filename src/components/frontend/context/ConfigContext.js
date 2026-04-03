@@ -16,6 +16,7 @@ export const defaultConfig = {
 	open_in_new_page: false,
 	include_or_exclude: 'include',
 	post_type: 'post',
+	taxonomy: 'category',
 	expandCategories: [],
 };
 

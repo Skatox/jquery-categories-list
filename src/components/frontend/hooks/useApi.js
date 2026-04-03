@@ -24,6 +24,7 @@ export default function useApi( url ) {
 			parent,
 			showEmpty: config.show_empty,
 			postType: config.post_type || 'post',
+			taxonomy: config.taxonomy || 'category',
 		} );
 
 		if ( typeof jclCurrentCat !== 'undefined' && config.onlycategory > 0 ) {

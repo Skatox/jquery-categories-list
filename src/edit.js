@@ -13,6 +13,7 @@ import {
 	RadioControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,33 +23,134 @@ import CategoryPicker from './components/admin/CategoryPicker';
 import JsCategoriesList from './components/frontend/JsCategoriesList';
 import { ConfigProvider } from './components/frontend/context/ConfigContext';
 
+const EMPTY_ARRAY = [];
+
+const getDefaultTaxonomyForPostType = ( taxonomies, postType ) => {
+	if ( ! postType ) {
+		return 'category';
+	}
+
+	const hierarchicalTaxonomies = taxonomies.filter(
+		( taxonomy ) =>
+			taxonomy.types?.includes( postType ) &&
+			taxonomy.visibility?.show_ui !== false &&
+			taxonomy.slug !== 'post_format' &&
+			taxonomy.hierarchical
+	);
+
+	if ( hierarchicalTaxonomies.length === 0 ) {
+		return '';
+	}
+
+	const categoryTaxonomy = hierarchicalTaxonomies.find(
+		( taxonomy ) => taxonomy.slug === 'category'
+	);
+
+	return categoryTaxonomy?.slug ?? hierarchicalTaxonomies[ 0 ].slug;
+};
+
 export default function Edit( { attributes, setAttributes } ) {
 	const categories = Array.isArray( attributes.categories )
-		? attributes.categories
+		? attributes.categories.map( String )
 		: [];
-	const postTypes = useSelect( ( select ) =>
-		select( 'core' ).getPostTypes( { per_page: -1 } )
+	const postTypes = useSelect(
+		( select ) =>
+			select( 'core' ).getPostTypes( {
+				per_page: -1,
+				context: 'view',
+			} ) ?? EMPTY_ARRAY,
+		[]
 	);
-	const supportedPostTypes = ( postTypes || [] ).filter(
-		( postType ) =>
-			postType.viewable &&
-			postType.slug !== 'attachment' &&
-			postType.taxonomies?.includes( 'category' )
+	const taxonomies = useSelect(
+		( select ) =>
+			select( 'core' ).getTaxonomies( {
+				per_page: -1,
+				context: 'view',
+			} ) ?? EMPTY_ARRAY,
+		[]
 	);
-	const postTypeOptions = [
-		{ value: 'post', label: __( 'Post', 'jquery-categories-list' ) },
-		...supportedPostTypes
-			.filter( ( postType ) => postType.slug !== 'post' )
+	const postTypeOptions = useMemo( () => {
+		return postTypes
+			.filter(
+				( postType ) =>
+					postType.slug &&
+					postType.show_in_rest !== false &&
+					postType.visibility?.show_ui !== false &&
+					( postType.slug === 'post' ||
+						postType.slug === 'page' ||
+						( ! postType._builtin &&
+							! postType.slug.startsWith( 'wp_' ) ) ) &&
+					postType.slug !== 'attachment' &&
+					postType.slug !== 'wp_block'
+			)
 			.map( ( postType ) => ( {
-				value: postType.slug,
 				label:
 					postType.labels?.singular_name || postType.name || postType.slug,
-			} ) ),
-	];
+				value: postType.slug,
+			} ) )
+			.sort( ( a, b ) => {
+				if ( a.value === 'post' ) {
+					return -1;
+				}
+
+				if ( b.value === 'post' ) {
+					return 1;
+				}
+
+				if ( a.value === 'page' ) {
+					return -1;
+				}
+
+				if ( b.value === 'page' ) {
+					return 1;
+				}
+
+				return a.label.localeCompare( b.label );
+			} );
+	}, [ postTypes ] );
+	const taxonomyOptions = useMemo( () => {
+		return taxonomies
+			.filter(
+				( taxonomy ) =>
+					taxonomy.types?.includes( attributes.post_type || 'post' ) &&
+					taxonomy.visibility?.show_ui !== false &&
+					taxonomy.slug !== 'post_format' &&
+					taxonomy.hierarchical
+			)
+			.map( ( taxonomy ) => ( {
+				label: taxonomy.labels?.singular_name || taxonomy.name,
+				value: taxonomy.slug,
+			} ) );
+	}, [ attributes.post_type, taxonomies ] );
+	const selectedTaxonomy = taxonomyOptions.some(
+		( option ) => option.value === attributes.taxonomy
+	)
+		? attributes.taxonomy
+		: getDefaultTaxonomyForPostType(
+				taxonomies,
+				attributes.post_type || 'post'
+			);
+
+	const handlePostTypeChange = ( postType ) => {
+		setAttributes( {
+			post_type: postType,
+			taxonomy: getDefaultTaxonomyForPostType( taxonomies, postType ),
+			categories: [],
+		} );
+	};
+
+	const handleTaxonomyChange = ( taxonomy ) => {
+		setAttributes( {
+			taxonomy,
+			categories: [],
+		} );
+	};
 
 	return (
 		<div { ...useBlockProps() }>
-			<ConfigProvider attributes={ attributes }>
+			<ConfigProvider
+				attributes={ { ...attributes, taxonomy: selectedTaxonomy } }
+			>
 				<JsCategoriesList />
 			</ConfigProvider>
 			<InspectorControls key="setting">
@@ -58,17 +160,6 @@ export default function Edit( { attributes, setAttributes } ) {
 							title={ __( 'General options', 'jquery-categories-list' ) }
 							initialOpen={ true }
 						>
-							<SelectControl
-								label={ __( 'Post type', 'jquery-categories-list' ) }
-								value={ attributes.post_type || 'post' }
-								onChange={ ( val ) =>
-									setAttributes( {
-										post_type: val,
-										categories: [],
-									} )
-								}
-								options={ postTypeOptions }
-							/>
 							<TextControl
 								label={ __( 'Title', 'jquery-categories-list' ) }
 								value={ attributes.title }
@@ -205,6 +296,12 @@ export default function Edit( { attributes, setAttributes } ) {
 									},
 								] }
 							/>
+							<SelectControl
+								label={ __( 'Post type', 'jquery-categories-list' ) }
+								value={ attributes.post_type || 'post' }
+								onChange={ handlePostTypeChange }
+								options={ postTypeOptions }
+							/>
 						</PanelBody>
 					</Panel>
 					<Panel>
@@ -257,6 +354,16 @@ export default function Edit( { attributes, setAttributes } ) {
 							title={ __( 'Category management', 'jquery-categories-list' ) }
 							initialOpen={ false }
 						>
+							{ taxonomyOptions.length > 0 ? (
+								<PanelRow>
+									<SelectControl
+										label={ __( 'Taxonomy', 'jquery-categories-list' ) }
+										value={ selectedTaxonomy }
+										onChange={ handleTaxonomyChange }
+										options={ taxonomyOptions }
+									/>
+								</PanelRow>
+							) : null }
 							<PanelRow>
 								<RadioControl
 									label={ __(
@@ -264,6 +371,7 @@ export default function Edit( { attributes, setAttributes } ) {
 										'jquery-categories-list'
 									) }
 									selected={ attributes.include_or_exclude }
+									disabled={ ! selectedTaxonomy }
 									options={ [
 										{
 											label: __(
@@ -290,7 +398,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							<PanelRow>
 								<CategoryPicker
 									selectedCats={ categories }
-									postType={ attributes.post_type || 'post' }
+									taxonomy={ selectedTaxonomy }
 									onSelected={ ( val ) =>
 										setAttributes( { categories: val } )
 									}

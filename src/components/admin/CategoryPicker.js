@@ -3,49 +3,44 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
-import apiFetch from '@wordpress/api-fetch';
+import { useSelect } from '@wordpress/data';
 
-const CategoryPicker = ( { selectedCats, onSelected, postType = 'post' } ) => {
-	const [ categories, setCategories ] = useState( [] );
-	const [ isLoading, setIsLoading ] = useState( true );
+const EMPTY_QUERY = { per_page: 100, hide_empty: false };
 
-	useEffect( () => {
-		let cancelled = false;
-		setIsLoading( true );
+const CategoryPicker = ( { selectedCats, onSelected, taxonomy = 'category' } ) => {
+	const query = { ...EMPTY_QUERY };
+	const categories = useSelect(
+		( select ) =>
+			select( 'core' ).getEntityRecords( 'taxonomy', taxonomy, query ),
+		[ taxonomy ]
+	);
 
-		apiFetch( {
-			path: `/jcl/v1/category-options?postType=${ encodeURIComponent(
-				postType
-			) }`,
-		} )
-			.then( ( response ) => {
-				if ( cancelled ) {
-					return;
-				}
+	const isLoading = useSelect(
+		( select ) =>
+			select( 'core/data' ).isResolving( 'core', 'getEntityRecords', [
+				'taxonomy',
+				taxonomy,
+				query,
+			] ),
+		[ taxonomy ]
+	);
 
-				setCategories( response?.categories ?? [] );
-				setIsLoading( false );
-			} )
-			.catch( () => {
-				if ( cancelled ) {
-					return;
-				}
-
-				setCategories( [] );
-				setIsLoading( false );
-			} );
-
-		return () => {
-			cancelled = true;
-		};
-	}, [ postType ] );
+	if ( ! taxonomy ) {
+		return (
+			<p>
+				{ __(
+					'No taxonomy is available for this post type.',
+					'jquery-categories-list'
+				) }
+			</p>
+		);
+	}
 
 	if ( isLoading ) {
 		return <h3>{ __( 'Loading categories…', 'jquery-categories-list' ) }</h3>;
 	}
 
-	if ( categories.length === 0 ) {
+	if ( categories === null || categories.length === 0 ) {
 		return <p>{ __( 'No categories found.', 'jquery-categories-list' ) }</p>;
 	}
 
@@ -55,11 +50,9 @@ const CategoryPicker = ( { selectedCats, onSelected, postType = 'post' } ) => {
 			multiple
 			options={ categories.map( ( { id, name } ) => ( {
 				label: name,
-				value: id,
+				value: String( id ),
 			} ) ) }
-			onChange={ ( selected ) => {
-				onSelected( selected );
-			} }
+			onChange={ onSelected }
 			style={ { minWidth: '250px', height: '100px' } }
 			value={ selectedCats }
 		/>

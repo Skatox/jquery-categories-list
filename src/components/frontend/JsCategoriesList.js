@@ -27,12 +27,23 @@ const JsCategoriesList = () => {
 	const animationFunction = useAnimation( config.effect );
 
 	useEffect( () => {
-		loadCategories( config );
+		setLoaded( false );
+		const request = loadCategories( config );
+
+		if ( request && typeof request.then === 'function' ) {
+			request.then( ( result ) => {
+				if ( result !== false ) {
+					setLoaded( true );
+				}
+			} );
+		} else if ( request !== false ) {
+			setLoaded( true );
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [] );
+	}, [ config ] );
 
 	useEffect( () => {
-		if ( ! loaded && ( error || loaded ) ) {
+		if ( ! loaded && error ) {
 			setLoaded( true );
 		}
 	}, [ loaded, error ] );
