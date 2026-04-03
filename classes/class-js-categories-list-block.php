@@ -24,6 +24,88 @@ class JS_Categories_List_Block {
 	private $attributes = [];
 
 	/**
+	 * Sanitizes and validates the selected post type.
+	 *
+	 * @param mixed $post_type Raw post type.
+	 * @return string
+	 */
+	private function sanitize_post_type( $post_type ) {
+		$post_type = sanitize_key( (string) $post_type );
+
+		if ( empty( $post_type ) ) {
+			return 'post';
+		}
+
+		$object = get_post_type_object( $post_type );
+
+		if ( ! $object ) {
+			return 'post';
+		}
+
+		return $post_type;
+	}
+
+	/**
+	 * Returns the default hierarchical taxonomy for a post type.
+	 *
+	 * @param string $post_type Sanitized post type.
+	 * @return string
+	 */
+	private function get_default_taxonomy_for_post_type( $post_type ) {
+		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+		if ( empty( $taxonomies ) ) {
+			return 'category';
+		}
+
+		$hierarchical_taxonomies = array_filter(
+			$taxonomies,
+			static function ( $taxonomy ) {
+				return ! empty( $taxonomy->hierarchical ) && false !== $taxonomy->show_ui;
+			}
+		);
+
+		if ( empty( $hierarchical_taxonomies ) ) {
+			return 'category';
+		}
+
+		if ( isset( $hierarchical_taxonomies['category'] ) ) {
+			return 'category';
+		}
+
+		$first_taxonomy = reset( $hierarchical_taxonomies );
+
+		return $first_taxonomy->name ?? 'category';
+	}
+
+	/**
+	 * Sanitizes the selected taxonomy for a post type.
+	 *
+	 * @param string $post_type Sanitized post type.
+	 * @param mixed  $taxonomy Raw taxonomy.
+	 * @return string
+	 */
+	private function sanitize_taxonomy( $post_type, $taxonomy ) {
+		$taxonomy = sanitize_key( (string) $taxonomy );
+
+		if ( empty( $taxonomy ) ) {
+			return $this->get_default_taxonomy_for_post_type( $post_type );
+		}
+
+		$taxonomy_object = get_taxonomy( $taxonomy );
+
+		if (
+			! $taxonomy_object ||
+			empty( $taxonomy_object->hierarchical ) ||
+			! is_object_in_taxonomy( $post_type, $taxonomy )
+		) {
+			return $this->get_default_taxonomy_for_post_type( $post_type );
+		}
+
+		return $taxonomy;
+	}
+
+	/**
 	 * Returns the singleton instance.
 	 *
 	 * @return JS_Categories_List_Block
@@ -74,6 +156,8 @@ class JS_Categories_List_Block {
 	 * @return void
 	 */
 	private function set_attributes( $block_attributes = [] ) {
+		$post_type = $this->sanitize_post_type( $block_attributes['post_type'] ?? 'post' );
+
 		$this->attributes = [
 			'title'              => $block_attributes['title'] ?? '',
 			'symbol'             => $block_attributes['symbol'] ?? '0',
@@ -84,9 +168,12 @@ class JS_Categories_List_Block {
 			'expand'             => $block_attributes['expand'] ?? '',
 			'showcount'          => (int) ( $block_attributes['showcount'] ?? 0 ),
 			'show_empty'         => (int) ( $block_attributes['show_empty'] ?? 0 ),
+			'open_in_new_page'   => (int) ( $block_attributes['open_in_new_page'] ?? 0 ),
 			'parent_expand'      => (int) ( $block_attributes['parent_expand'] ?? 0 ),
 			'include_or_exclude' => $block_attributes['include_or_exclude'] ?? 'include',
 			'categories'         => isset( $block_attributes['categories'] ) ? implode( ',', $block_attributes['categories'] ) : '',
+			'post_type'          => $post_type,
+			'taxonomy'           => $this->sanitize_taxonomy( $post_type, $block_attributes['taxonomy'] ?? 'category' ),
 		];
 	}
 

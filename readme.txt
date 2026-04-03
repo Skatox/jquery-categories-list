@@ -4,7 +4,7 @@ Donate link: https://skatox.com/blog/jquery-categories-list-widget/
 Tags: javascript, categories, gutenberg, block, widget
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,7 @@ This plugin provides a widget and a filter to display a collapsible list of cate
 * Expand: if list should be expanded or callapsed by default.
 * Show number of posts: display how many post are published in the category.
 * Show empty categories: display categories with no posts.
+* Open links in a new page: render category links with target="_blank".
 * Categories to include: categories to be included from the list.
 * Categories to exclude: categories to be excluded from the list.
 
@@ -120,6 +121,13 @@ Since 2.0 it's possible. Each instance has its own configuration. Shortcode widg
 2.  Here you can see a list of categories and its sub-categories expanded.
 
 == Change Log ==
+
+= 4.1.1 =
+* Added a post type selector in the block editor to switch between posts and custom post types registered with the default Categories taxonomy.
+* Added REST support to load category options and frontend category trees by selected post type.
+* Updated category picker behavior to refresh category options when changing the selected post type.
+* Added a new block setting to open category links in a new page (`target="_blank"`).
+* Added backward-compatible post type fallback to `post` when older block instances do not have `post_type` saved.
 
 = 4.1.0 = 
 * Standardized the plugin text domain to `jquery-categories-list` across PHP, block metadata, JavaScript, and bundled translation files for better WordPress.org compatibility.

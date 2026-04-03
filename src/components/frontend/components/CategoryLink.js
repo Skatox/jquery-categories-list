@@ -18,7 +18,12 @@ const CategoryLink = ( { category } ) => {
 	}
 
 	return (
-		<a href={ category.url } title={ category.name }>
+		<a
+			href={ category.url }
+			title={ category.name }
+			target={ config.open_in_new_page ? '_blank' : undefined }
+			rel={ config.open_in_new_page ? 'noopener noreferrer' : undefined }
+		>
 			{ linkContent }
 		</a>
 	);
