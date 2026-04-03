@@ -29,6 +29,33 @@ class JS_Categories_List_Rest_Endpoints {
 				'permission_callback' => '__return_true',
 			]
 		);
+
+		register_rest_route(
+			'jcl/v1',
+			'/category-options',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_category_options' ],
+				'permission_callback' => '__return_true',
+			]
+		);
+	}
+
+	/**
+	 * Normalizes the post type request parameter.
+	 *
+	 * @param string $post_type Requested post type.
+	 * @return string
+	 */
+	private function sanitize_post_type( $post_type ) {
+		$post_type = sanitize_key( $post_type ?: 'post' );
+		$object    = get_post_type_object( $post_type );
+
+		if ( ! $object || ! is_object_in_taxonomy( $post_type, 'category' ) ) {
+			return 'post';
+		}
+
+		return $post_type;
 	}
 
 	/**
@@ -65,6 +92,7 @@ class JS_Categories_List_Rest_Endpoints {
 			'orderdir'   => $orderdir,
 			'parent'     => absint( $request->get_param( 'parent' ) ?: 0 ),
 			'show_empty' => (bool) $show_empty,
+			'post_type'  => $this->sanitize_post_type( (string) $request->get_param( 'postType' ) ),
 		];
 	}
 
@@ -78,7 +106,7 @@ class JS_Categories_List_Rest_Endpoints {
 		$config          = $this->build_config( $request );
 		$full_categories = get_categories(
 			[
-				'type'         => 'post',
+				'type'         => $config['post_type'],
 				'orderby'      => $config['orderby'],
 				'order'        => $config['orderdir'],
 				'hide_empty'   => ! $config['show_empty'],
@@ -106,6 +134,43 @@ class JS_Categories_List_Rest_Endpoints {
 		return new WP_REST_Response(
 			[
 				'categories' => $categories,
+			],
+			200
+		);
+	}
+
+	/**
+	 * Gets category options for editor controls.
+	 *
+	 * @param WP_REST_Request $request Full request data.
+	 * @return WP_REST_Response
+	 */
+	public function get_category_options( $request ) {
+		$post_type = $this->sanitize_post_type( (string) $request->get_param( 'postType' ) );
+		$terms     = get_categories(
+			[
+				'type'         => $post_type,
+				'orderby'      => 'name',
+				'order'        => 'ASC',
+				'hide_empty'   => false,
+				'hierarchical' => 1,
+				'taxonomy'     => 'category',
+			]
+		);
+
+		$options = array_map(
+			static function ( $term ) {
+				return [
+					'id'   => (int) $term->term_id,
+					'name' => $term->name,
+				];
+			},
+			$terms
+		);
+
+		return new WP_REST_Response(
+			[
+				'categories' => $options,
 			],
 			200
 		);

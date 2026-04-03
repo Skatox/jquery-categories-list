@@ -66,4 +66,27 @@ describe( 'Category', () => {
 		const linkContent = `${ category.name } (${ category.count })`;
 		expect( linkElement ).toHaveTextContent( linkContent );
 	} );
+
+	test( 'should open links in new page if configured', () => {
+		const config = {
+			...defaultConfig,
+			open_in_new_page: true,
+		};
+
+		const { getByRole } = render(
+			<ConfigContext.Provider value={ { config } }>
+				<CategoryLink category={ category } />
+			</ConfigContext.Provider>
+		);
+
+		const linkElement = getByRole( 'link', {
+			href: category.url,
+		} );
+
+		expect( linkElement ).toHaveAttribute( 'target', '_blank' );
+		expect( linkElement ).toHaveAttribute(
+			'rel',
+			'noopener noreferrer'
+		);
+	} );
 } );

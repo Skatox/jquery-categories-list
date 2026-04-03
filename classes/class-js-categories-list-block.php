@@ -24,6 +24,28 @@ class JS_Categories_List_Block {
 	private $attributes = [];
 
 	/**
+	 * Sanitizes and validates the selected post type.
+	 *
+	 * @param mixed $post_type Raw post type.
+	 * @return string
+	 */
+	private function sanitize_post_type( $post_type ) {
+		$post_type = sanitize_key( (string) $post_type );
+
+		if ( empty( $post_type ) ) {
+			return 'post';
+		}
+
+		$object = get_post_type_object( $post_type );
+
+		if ( ! $object || ! is_object_in_taxonomy( $post_type, 'category' ) ) {
+			return 'post';
+		}
+
+		return $post_type;
+	}
+
+	/**
 	 * Returns the singleton instance.
 	 *
 	 * @return JS_Categories_List_Block
@@ -84,9 +106,11 @@ class JS_Categories_List_Block {
 			'expand'             => $block_attributes['expand'] ?? '',
 			'showcount'          => (int) ( $block_attributes['showcount'] ?? 0 ),
 			'show_empty'         => (int) ( $block_attributes['show_empty'] ?? 0 ),
+			'open_in_new_page'   => (int) ( $block_attributes['open_in_new_page'] ?? 0 ),
 			'parent_expand'      => (int) ( $block_attributes['parent_expand'] ?? 0 ),
 			'include_or_exclude' => $block_attributes['include_or_exclude'] ?? 'include',
 			'categories'         => isset( $block_attributes['categories'] ) ? implode( ',', $block_attributes['categories'] ) : '',
+			'post_type'          => $this->sanitize_post_type( $block_attributes['post_type'] ?? 'post' ),
 		];
 	}
 

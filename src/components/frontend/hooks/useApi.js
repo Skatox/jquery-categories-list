@@ -23,8 +23,7 @@ export default function useApi( url ) {
 			orderdir: config.orderdir,
 			parent,
 			showEmpty: config.show_empty,
-			taxonomy: 'category',
-			type: 'post',
+			postType: config.post_type || 'post',
 		} );
 
 		if ( typeof jclCurrentCat !== 'undefined' && config.onlycategory > 0 ) {

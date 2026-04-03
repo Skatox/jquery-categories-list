@@ -33,6 +33,8 @@ const BulletWithSymbol = ( { expanded, title, permalink, onToggle } ) => {
 			href={ permalink }
 			title={ title }
 			className={ expandedClass }
+			target={ config.open_in_new_page ? '_blank' : undefined }
+			rel={ config.open_in_new_page ? 'noopener noreferrer' : undefined }
 			onClick={ onToggle }
 		>
 			{ symbol }

@@ -13,7 +13,9 @@ export const defaultConfig = {
 	orderdir: 'ASC',
 	showcount: false,
 	show_empty: false,
+	open_in_new_page: false,
 	include_or_exclude: 'include',
+	post_type: 'post',
 	expandCategories: [],
 };
 

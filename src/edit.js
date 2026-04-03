@@ -12,6 +12,7 @@ import {
 	PanelRow,
 	RadioControl,
 } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,6 +26,25 @@ export default function Edit( { attributes, setAttributes } ) {
 	const categories = Array.isArray( attributes.categories )
 		? attributes.categories
 		: [];
+	const postTypes = useSelect( ( select ) =>
+		select( 'core' ).getPostTypes( { per_page: -1 } )
+	);
+	const supportedPostTypes = ( postTypes || [] ).filter(
+		( postType ) =>
+			postType.viewable &&
+			postType.slug !== 'attachment' &&
+			postType.taxonomies?.includes( 'category' )
+	);
+	const postTypeOptions = [
+		{ value: 'post', label: __( 'Post', 'jquery-categories-list' ) },
+		...supportedPostTypes
+			.filter( ( postType ) => postType.slug !== 'post' )
+			.map( ( postType ) => ( {
+				value: postType.slug,
+				label:
+					postType.labels?.singular_name || postType.name || postType.slug,
+			} ) ),
+	];
 
 	return (
 		<div { ...useBlockProps() }>
@@ -38,6 +58,17 @@ export default function Edit( { attributes, setAttributes } ) {
 							title={ __( 'General options', 'jquery-categories-list' ) }
 							initialOpen={ true }
 						>
+							<SelectControl
+								label={ __( 'Post type', 'jquery-categories-list' ) }
+								value={ attributes.post_type || 'post' }
+								onChange={ ( val ) =>
+									setAttributes( {
+										post_type: val,
+										categories: [],
+									} )
+								}
+								options={ postTypeOptions }
+							/>
 							<TextControl
 								label={ __( 'Title', 'jquery-categories-list' ) }
 								value={ attributes.title }
@@ -205,6 +236,20 @@ export default function Edit( { attributes, setAttributes } ) {
 									}
 								/>
 							</PanelRow>
+							<PanelRow>
+								<CheckboxControl
+									label={ __(
+										'Open links in a new page',
+										'jquery-categories-list'
+									) }
+									checked={ attributes.open_in_new_page }
+									onChange={ ( val ) =>
+										setAttributes( {
+											open_in_new_page: val,
+										} )
+									}
+								/>
+							</PanelRow>
 						</PanelBody>
 					</Panel>
 					<Panel>
@@ -245,6 +290,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							<PanelRow>
 								<CategoryPicker
 									selectedCats={ categories }
+									postType={ attributes.post_type || 'post' }
 									onSelected={ ( val ) =>
 										setAttributes( { categories: val } )
 									}
